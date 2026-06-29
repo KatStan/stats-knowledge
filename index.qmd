@@ -1,11 +1,10 @@
 ---
-title: "Stats-knowledge"
+title: "My Statistical Knowledgebase"
+listing:
+  contents: topics
+  type: grid
+  grid-item-align: center
+  image-height: "0"
+  sort: "title" #alphabetically sort by title
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
