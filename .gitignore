@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# for CI purposes
+/.quarto/
+# don't need rendered output to be saved
+/_site/
