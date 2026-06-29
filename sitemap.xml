@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://KatStan.github.io/stats-knowledge/topics/topic2.html</loc>
+    <lastmod>2026-06-29T17:47:54.888Z</lastmod>
+  </url>
+  <url>
     <loc>https://KatStan.github.io/stats-knowledge/index.html</loc>
-    <lastmod>2026-06-29T15:18:24.692Z</lastmod>
+    <lastmod>2026-06-29T17:47:54.887Z</lastmod>
   </url>
   <url>
     <loc>https://KatStan.github.io/stats-knowledge/about.html</loc>
-    <lastmod>2026-06-29T15:18:24.692Z</lastmod>
+    <lastmod>2026-06-29T17:47:54.887Z</lastmod>
+  </url>
+  <url>
+    <loc>https://KatStan.github.io/stats-knowledge/topics/topic1.html</loc>
+    <lastmod>2026-06-29T17:47:54.887Z</lastmod>
   </url>
 </urlset>
