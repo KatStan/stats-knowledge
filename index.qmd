@@ -4,7 +4,8 @@ listing:
   contents: topics
   type: grid
   grid-item-align: center
-  image-height: "0"
   sort: "title" #alphabetically sort by title
+  fields: 
+    - title
 ---
 
