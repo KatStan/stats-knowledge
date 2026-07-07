@@ -2,8 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/topics/topic1.html",
-      "/topics/topic2.html"
+      "/topics/visualisations/topic2.html",
+      "/topics/others_tba/topic1.html"
     ]
   }
 ]
