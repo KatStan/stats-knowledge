@@ -1,11 +1,27 @@
 ---
 title: "My Statistical Knowledgebase"
 listing:
-  contents: topics
-  type: grid
-  grid-item-align: center
-  sort: "title" #alphabetically sort by title
-  fields: 
-    - title
+  - id: visualisations
+    contents: topics/visualisations
+    type: grid
+    sort: "title asc"
+    fields: 
+      - title
+  - id: other
+    contents: topics/others_tba
+    type: grid
+    sort: "title asc"
+    fields: 
+      - title
 ---
+## Visualisations
 
+
+::: {#visualisations}
+:::
+
+## Other
+
+
+::: {#other}
+:::

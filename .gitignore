@@ -7,3 +7,4 @@
 /.quarto/
 # don't need rendered output to be saved
 /_site/
+**/*.quarto_ipynb
