@@ -2,13 +2,13 @@
 title: "My Statistical Knowledgebase"
 listing:
   - id: visualisations
-    contents: topics/visualisations
+    contents: "topics/visualisations/*.qmd"
     type: grid
     sort: "title asc"
     fields: 
       - title
   - id: other
-    contents: topics/others_tba
+    contents: "topics/others_tba/*.qmd"
     type: grid
     sort: "title asc"
     fields: 
