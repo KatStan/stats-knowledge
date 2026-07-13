@@ -22,10 +22,10 @@ It's a quick way of seeing the spread (not the distribution tho!) and the 5 basi
 
 library(datasets) # for loading iris
 library(ggplot2) # for plotting
-library(hrbrthemes) # for fancier plotting themes
+suppressMessages(library(tidyverse))
 data(iris)
 
-# brief transformation so we see only two groups of Species instead of 3 
+# brief transformation so we see only two groups of Species (instead of three) 
 iris %>% dplyr::filter(Species %in% c("setosa", "versicolor")) %>%
   ggplot() +
   geom_boxplot(mapping = aes(x = Species, y = Petal.Length)) 
@@ -36,20 +36,17 @@ be some kind of difference worth investigating further.
 
 ### When to use this?
 
-I'd use this more for quick comparisons between groups with the same trait of interest.  
-Be careful to not over-interpret, there is no statistical test here claiming 
-these 2+ groups are statistically different from each other! More on that in 
-"statistical tests tba". There are notched box plots that somewhat coincide with
-95% CIs for medians, but you would need to test regardless.  
-Box plots also hide info like distribution and sample size. If I would like to see the
-**distribution**, I find violin plots^[to be a link soon] more useful. **Sample size**
-could be seen with adding each data point with e.g. jitter.   
-You might really care about how the median or quartiles are calculated, be wary
-whether the box plot is calculating it how you would like (R has 9 types of
-quantile calculations, see [here](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/quantile)).
-With a larger number observations, they converge, but on smaller datasets you can
-see a difference (what does larger mean? In practice should be n>30, but take that
-with a grain of salt).
+I'd use this more for **quick comparisons** between groups with the same trait of interest.  
+Do **not** over-interpret, there is no statistical test here claiming 
+these 2+ groups are statistically different from each other! More on that in [Statistical Tests TBA](). There are *notched*  box plots that somewhat coincide with
+95% CIs for medians, but you would need to test for a difference between medians regardless.  
+***Caveats:***   
+- Box plots also hide info like distribution and sample size. If I would like to see the **distribution**, I find violin plots^[to be a link soon] more useful. **Sample size** could be seen with adding each data point with e.g. jitter.  
+- If you feel strongly about about how the median or quartiles are calculated, be wary!
+Check how the box plot is calculating it (R has 9 types of
+quantile calculations, see [here](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/quantile)). With a larger^[In practice, larger should be n>30, but take that
+with a grain of salt] number observations, they converge, but on smaller datasets you can
+see a difference.
 
 ### Interpreting a box plot
 Now let's look at the details of a box plot.
@@ -58,18 +55,16 @@ Now let's look at the details of a box plot.
 
 The box starts and ends (called hinges) with the $1^{st}$ and $3^{rd}$ quartile, with the median 
 denoted inside the box. The length of the box is called the interquartile range and 
-is commonly abbreviated as IQR. It's calculated as $3^{rd}\_quartile-1^{st}\_quartile$.  
-As for how far the whiskers will reach depends on the boxplot function you are 
-working with. **Check the docs for your function of interest!**  
-Above I used `ggplot2::geom_boxplot` that states:
+is commonly abbreviated as IQR. It's calculated as $3^{rd} quartile-1^{st} quartile$.  
+The boxplot function you are working with determines how long the whiskers will be. **Check the docs for your function of interest!** Above I used `ggplot2::geom_boxplot` that states:
 
 > The upper whisker extends from the hinge to the largest value no further than 1.5 * IQR from the hinge (where IQR is the inter-quartile range, or distance between the first and third quartiles). The lower whisker extends from the hinge to the smallest value at most 1.5 * IQR of the hinge. Data beyond the end of the whiskers are called "outlying" points and are plotted individually.
 
 
 So for `ggplot2::geom_boxplot`, the right whisker extends to the last datapoint 
-that is no further than 1.5 * IQR from the right hinge, and outliers are considered 
+that is **no further** than 1.5 * IQR from the right hinge, and outliers are considered 
 everything greater. Analogous for the left whisker.   
-Other box plot function could e.g. just extend the whiskers to the min and max 
+Other box plot functions could e.g. just extend the whiskers to the min and max 
 datapoints, meaning there are no outliers in that scenario.
 
 On real data:
@@ -85,28 +80,30 @@ quartiles <- five_quantiles[c("25%", "50%", "75%")]
 
 IQR <- quartiles[["75%"]] - quartiles[["25%"]] 
 
-# what numbers are compared to data points to determine whiskers
+# the numbers that are compared to data points to determine whisker ends
 fences <- c(quartiles[["25%"]] - 1.5*IQR, quartiles[["75%"]] + 1.5*IQR)
+
+colours <- c("Data points"="orange", "Quartiles (Q1-3)" = "red", "Hinges +/- 1.5*IQR" = "green")
 
 setosas %>%
   ggplot(mapping = aes(x = Petal.Length, y = Species)) +
   geom_boxplot() +
   # each individual data point will be seen by only jittering vertically, 
   # not horizontally thanks to width = 0
-  geom_jitter(color="orange", size=1, alpha=0.9, width = 0) +
+  geom_jitter(mapping=aes(color="Data points"), size=1, alpha=0.9, width = 0) +
   # quartiles are red squares
   geom_point(data = data.frame(x = quartiles, y = "setosa"), 
-             mapping = aes(x = x, y = y),
-             color = "red",
+             mapping = aes(x = x, y = y, color = "Quartiles (Q1-3)"), 
              shape = "square", 
              size = 3 ) + 
   # the +/- 1.5*IQR are green diamonds, making it easier to see why some are
   # outliers, and which datapoints have been "chosen" for whisker endings
   geom_point(data = data.frame(x = fences, y = "setosa"), 
-             mapping = aes(x = x, y = y),
-             color = "green",
+             mapping = aes(x = x, y = y, color = "Hinges +/- 1.5*IQR"),
              shape = "diamond", 
-             size = 4 )
+             size = 4 ) +
+  labs(color = "Legend") +
+  scale_color_manual(values = colours)
 
   
 ```
