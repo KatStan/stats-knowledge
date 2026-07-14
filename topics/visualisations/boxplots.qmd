@@ -72,7 +72,8 @@ On real data:
 ```{r}
 #| label: iris_example_box_plot
 
-setosas <- iris %>% dplyr::filter(Species %in% c("setosa"))
+setosas <- iris %>% dplyr::filter(Species %in% c("setosa")) %>%
+                    dplyr::mutate(point_type = "data_point")
 
 five_quantiles <- quantile(setosas$Petal.Length)
 
@@ -83,27 +84,51 @@ IQR <- quartiles[["75%"]] - quartiles[["25%"]]
 # the numbers that are compared to data points to determine whisker ends
 fences <- c(quartiles[["25%"]] - 1.5*IQR, quartiles[["75%"]] + 1.5*IQR)
 
-colours <- c("Data points"="orange", "Quartiles (Q1-3)" = "red", "Hinges +/- 1.5*IQR" = "green")
+summaries_to_overlay <- data.frame(
+  Species = "setosa",
+  Petal.Length = c(quartiles, fences),
+  point_type = c(rep("quartile", length(quartiles)),
+                 rep("whisker_ends", length(fences))
+                 )
+)
 
-setosas %>%
-  ggplot(mapping = aes(x = Petal.Length, y = Species)) +
+point_type_colours <- c("data_point"   = "orange", 
+                        "quartile"     = "red", 
+                        "whisker_ends" = "green")
+
+point_type_labels <- c("data_point"   = "Data points", 
+                       "quartile"     = "Quartiles (Q1-3)", 
+                       "whisker_ends" = "Hinges +/- 1.5*IQR")
+
+point_type_shapes <- c("data_point"     = 16, #"dot", 
+                        "quartile"     = 15, # "square", 
+                        "whisker_ends" = 18 #"diamond"
+                       )
+
+ggplot(data = setosas, 
+       mapping = aes(x = Petal.Length, 
+                     y = Species)) +
   geom_boxplot() +
   # each individual data point will be seen by only jittering vertically, 
   # not horizontally thanks to width = 0
-  geom_jitter(mapping=aes(color="Data points"), size=1, alpha=0.9, width = 0) +
+  geom_jitter(mapping = aes(color = point_type,
+                            shape = point_type), 
+              size=1, alpha=0.9, width = 0) +
   # quartiles are red squares
-  geom_point(data = data.frame(x = quartiles, y = "setosa"), 
-             mapping = aes(x = x, y = y, color = "Quartiles (Q1-3)"), 
-             shape = "square", 
-             size = 3 ) + 
   # the +/- 1.5*IQR are green diamonds, making it easier to see why some are
   # outliers, and which datapoints have been "chosen" for whisker endings
-  geom_point(data = data.frame(x = fences, y = "setosa"), 
-             mapping = aes(x = x, y = y, color = "Hinges +/- 1.5*IQR"),
-             shape = "diamond", 
-             size = 4 ) +
-  labs(color = "Legend") +
-  scale_color_manual(values = colours)
+  geom_point(data = summaries_to_overlay, 
+             mapping = aes(x = Petal.Length, 
+                           y = Species, 
+                           color = point_type,
+                           shape = point_type), 
+             size = 4) + 
+  labs(color = "Legend",
+       shape = "Legend") +
+  scale_color_manual(values = point_type_colours,
+                     labels = point_type_labels) +
+  scale_shape_manual(values = point_type_shapes,
+                     labels = point_type_labels)
 
   
 ```
