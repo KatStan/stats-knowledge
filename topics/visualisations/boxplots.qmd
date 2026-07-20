@@ -6,8 +6,6 @@ format:
     footnotes-hover: true
 ---
 
-## Box plots 
-
 A box plot, or box-and-whiskers plot, is a graphical summary of all the observations
 of a single numerical trait in your data. 
 It's a quick way of seeing the spread (not the distribution tho!) and the 5 basic summaries:  
