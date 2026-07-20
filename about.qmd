@@ -2,8 +2,19 @@
 title: "About"
 ---
 
-About this site
+*All models are wrong, but some are useful.* - George E. P. Box
 
-```{r}
-1 + 1
-```
+I've always found statistics hard to remember, yet so crucial for so many 
+scientific questions. Knowing when to pick a test/technique allows for insights
+we all strive for, otherwise you are creating "useless" models. 
+
+My goal is to create a knowledgebase of stats, answering the following:  
+-  "What question is this test/technique answering" and   
+-  "Am I allowed to use it for my instance?" 
+
+The first question tackles the point and interpretation of a test/technique. The
+second talks about the assumptions they make about the data (and more). You can 
+have a test that does exactly what you need, but it makes assumptions about 
+your data for it to be used that just don't hold in your instance, making it a
+"useless" model.
+
