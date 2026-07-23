@@ -7,6 +7,12 @@ listing:
     sort: "title asc"
     fields: 
       - title
+  - id: modelling
+    contents: "topics/modelling/*.qmd"
+    type: grid
+    sort: "title asc"
+    fields: 
+      - title
   - id: other
     contents: "topics/others_tba/*.qmd"
     type: grid
@@ -14,6 +20,14 @@ listing:
     fields: 
       - title
 ---
+## Modelling
+
+
+::: {#modelling}
+:::
+
+## Testing
+
 ## Visualisations
 
 

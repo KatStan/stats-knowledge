@@ -1,0 +1,151 @@
+---
+title: "(Multivariable) linear regression"
+format: html
+---
+
+## TL;DR
+-  Do three diagnostics seen in @sec-when-can  
+-  Check adjusted $R^2>>0$
+-  Check residual standard error is small for the units and mean of your response variable 
+-  Continue looking at traits by following in @sec-interpret-lin  
+
+The regression of $Y$ on $x$ is the conditional mean $E(Y|x) = m(x)$, where $m(x)$ can take any form,
+but in a linear regression, it takes this form: $$\begin{gather} E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x) \text{ and } \\ var(Y|x) = \sigma^2 \end{gather}$$ where $\beta_j$ are the coefficients.
+Performing a regression means estimating $\beta_j, ~ j = 0,..,k$. 
+
+## Common phrases associated with linear regression
+-  Regression in the dictionary means "a return to a former state"
+-  The sentence "regression to the mean" means if a variable is extreme on its 
+first measurement, it will tend to be closer to the average on its second measurement
+and vice versa 
+-  Linear actually means linear in the coefficients, i.e. not necessarily a straight
+line but a linear combination (i.e an additive function) of complex and non-linear
+functions of x, with the coefficients 'out the front'  
+-  Additive function f is such that this holds $$ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) $$ where $$ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)$$ i.e. the coefficients of $f(x)$. See the maths behind @sec-maths-behind for proof this holds for $E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)$
+
+
+## When do I use a linear regression?
+(a.k.a what question do I need answering so that the answer is "use a lin regression for that"?)  
+
+-  you are interested in inferring a relationship between a variable/trait Y and a (vector of)
+variable/trait(s)    
+-  you are interested in predicting Y based on a new value of the variable/trait(s)    
+
+This explanation leads to treating Y as a random variable and x as the known. 
+Y is modelled as a **deterministic** function $m(x)$ plus a mean-zero noise term i.e. 
+the observation $(x_i, Y_i)$ satisfies $Y_i = m(x_i) + \epsilon_i$, where for all $i$, 
+$\epsilon_i$ are independent, $E(\epsilon_i)=0$ and $var(\epsilon_i)= \sigma^2$.
+
+::: {.callout-note}
+If $var(\epsilon_i)= \sigma_i^2$, it's called heteroscedasticity, handling this TBA
+:::
+
+## When CAN I use this, what needs to hold up for me to even think about using it? {#sec-when-can}
+We have to check the assumptions hold. The assumptions are:  
+1)  linear model for the mean, i.e. $E(Y|x) = m(x)$ is linear  
+2)  $var(\epsilon_i)= \sigma^2$ i.e. var is the same for all $i$  
+3)  the residue (error, noise) normality assumption of $\epsilon_i \sim N(0, \sigma^2)$  we have to introduce if we would like to know how well our coefficients are estimated (for CIs and testing hypotheses like whether the coeffs differ from 0 i.e. where Y is varying of x)  
+
+To check these assumptions, you need to fit the model first, and then check the assumptions.
+For each assumption you do:  
+1) Plot **observed** vs fitted values (each data point is described by the observed
+$Y_i$ and by the value $m(x_i)$ you have come to i.e. the value on your estimated line), 
+you are hoping to see points scattered randomly along the diagonal line of y = x  
+2) Plot **residuals** vs fitted values (each data point is described by the residual - observed 
+$Y_i$ minus $m(x_i)$ - and $m(x_i)$), you are hoping to see an equal amount of points above and below 0 at similar distances from 0  
+3) plot a normal QQ plot of the residuals to check whether the distribution of residuals
+is $\sim N(0, \sigma^2)$ - you're hoping to see all the points on the diagonal   
+
+Note: each $Y_i$ depends on $x_i$, the normality assumption is per $x_i$
+
+```{r}
+#| label: lm_diagnostics
+
+prostate_data <- read.table("https://hastie.su.domains/ElemStatLearn/datasets/prostate.data", header = TRUE)
+
+lm1 <- lm(lpsa ~ lcavol + lweight + age + lbph + svi + lcp + gleason + pgg45, data = prostate_data)
+
+# looking at 1)
+plot(fitted(lm1), prostate_data$lpsa, xlab = "Fitted", ylab = "Observed")
+abline(0,1)
+
+# looking at 2)
+plot(fitted(lm1), residuals(lm1), xlab = "Fitted", ylab = "Residuals")
+abline(h = 0)
+# I personally like this built-in version of fitted vs observables more, due to
+# the fitted curve, you'd want it to follow y = 0 as much as possible (not easy
+# when you have a smaller dataset, then it might be distracting)
+plot(lm1, 1:1)
+
+# looking at 3)
+# Q-Q plots compare quantiles of the observed data to the quantiles of your theoretical distribution
+# qqnorm compares to N(0,1)
+qqnorm(residuals(lm1))
+# default distribution based on which the line is drawn is N(0,1)
+# it's just a line that draws through the 1st and 3rd quantile (because we believe
+# that all the points from our data coincide with data points in this distribution, 
+# then so do the quantiles in our data and the theoretical quantiles, and we choose
+# to make a line through those, so that they are not favoured by a different mean/outliers)
+qqline(residuals(lm1))
+```
+
+## How do I assess if my lin model is likely a lin model?
+Apart from doing everything in @sec-when-can, especially 1), there is also $R^2$
+which is the coefficient of determination, measures the strength of the linear relationship
+between the traits and outcome and is between 0 and 1 i.e. the proportion of varY
+that is explained by your estimated m(x); an $R^2>>0$ indicates a closer fit of 
+the model to the data, and the adjusted $R^2$ takes into account irrelevant predictors 
+
+## How to interpret it once I know it's a likely a lin model? {#sec-interpret-lin}  
+Normally you want to see whether the trait(s) are in a relationship with $Y$, and
+you would do so by testing whether the coefficients next to those traits are 
+statistically significantly different from 0. 
+
+```{r}
+#| label: lm_summary
+
+prostate_data <- read.table("https://hastie.su.domains/ElemStatLearn/datasets/prostate.data", header = TRUE)
+
+lm1 <- lm(lpsa ~ lcavol + lweight + age + lbph + svi + lcp + gleason + pgg45, data = prostate_data)
+summary(lm1)
+
+```
+
+
+If some coefficients are not so different from 0, you might want to consider 
+a simpler model without these traits included, and test whether the two nested
+models are the same, and then proceed with the simpler one (o/w if they are 
+significantly different, proceed with the more complex model) - see Anova in testing TBA
+
+Whether the intercept is significantly different from 0 or not matters for whatever
+your model represents i.e. the state of the outcome when all of your traits are
+0 -> I would use this as a reality check
+
+In terms of interpreting the output:
+-incoming image 
+
+## Are there R caveats/defaults I need to know about?
+- uses ordinary least squares which doesn't assume any distribution for $Y_i$
+- implied intercept term unless you tell it otherwise
+- Non-NULL weights can be used to indicate that different observations have different variances
+($\epsilon_i$), see more in [details then](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm)
+- factor/categorical/continuous in the formula might change what the null is, hence what statistically different actually means - see Anova f-test in testing TBA
+
+## What can you use it for now? 
+You can use it for predicting, now for a given $x_i$ you care about, determine a
+$Y_i$
+
+
+## If you want the maths behind it {#sec-maths-behind}
+How is $m(x)$ an additive function? We know $m(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)$. Let's define $f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x),\text{ where } v_1 = (\beta_0, \beta_1, ..., \beta_k)$; we need $f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and } \\ f_{c*v_1}(x) = c*f_{v_1}(x)$ to hold true. 
+
+Proof: 
+$$
+\begin{gather}
+f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x), ~ f_{v_2}(x) = \alpha_0 + \sum_{i=1}^k \alpha_ig_{i}(x) \text{  and } \\ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k) \implies \\ 
+v1+v2 = (\beta_0 + \alpha_0, \beta_1 + \alpha_1, ..., \beta_k + \alpha_k) \implies \\
+f_{v_1+v_2}(x) = (\beta_0 + \alpha_0) + \sum_{i=1}^k (\beta_i+\alpha_i)g_{i}(x) = \beta_0  + \sum_{i=1}^k \beta_ig_{i}(x) + \alpha_0 + \sum_{i=1}^k \alpha_ig_{i}(x) = f_{v_1}(x) + f_{v_2}(x) ~ \square \\
+c*v1 = (c*\beta_0, c*\beta_1, ..., c*\beta_k) \implies \\
+f_{c*v_1}(x) = c*\beta_0 + \sum_{i=1}^k (c*\beta_i)g_{i}(x) = c*\beta_0 + c*\sum_{i=1}^k \beta_ig_{i}(x) = c(\beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)) = c*f_{v_1}(x) ~ \square
+\end{gather}
+$$
