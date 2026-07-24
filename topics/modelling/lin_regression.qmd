@@ -61,12 +61,13 @@ Note: each $Y_i$ depends on $x_i$, the normality assumption is per $x_i$
 ```{r}
 #| label: lm_diagnostics
 
-prostate_data <- read.table("https://hastie.su.domains/ElemStatLearn/datasets/prostate.data", header = TRUE)
+load(url("https://github.com/cran/ElemStatLearn/raw/refs/heads/master/data/prostate.RData"))
 
-lm1 <- lm(lpsa ~ lcavol + lweight + age + lbph + svi + lcp + gleason + pgg45, data = prostate_data)
+
+lm1 <- lm(lpsa ~ lcavol + lweight + age + lbph + svi + lcp + gleason + pgg45, data = prostate)
 
 # looking at 1)
-plot(fitted(lm1), prostate_data$lpsa, xlab = "Fitted", ylab = "Observed")
+plot(fitted(lm1), prostate$lpsa, xlab = "Fitted", ylab = "Observed")
 abline(0,1)
 
 # looking at 2)
@@ -104,9 +105,7 @@ statistically significantly different from 0.
 ```{r}
 #| label: lm_summary
 
-prostate_data <- read.table("https://hastie.su.domains/ElemStatLearn/datasets/prostate.data", header = TRUE)
-
-lm1 <- lm(lpsa ~ lcavol + lweight + age + lbph + svi + lcp + gleason + pgg45, data = prostate_data)
+lm1 <- lm(lpsa ~ lcavol + lweight + age + lbph + svi + lcp + gleason + pgg45, data = prostate)
 summary(lm1)
 
 ```
