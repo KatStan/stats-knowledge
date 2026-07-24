@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -74,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a547dd1b4798262c927e2e52fa668cb1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-6ac2aec46ad7f46b16024ee4409aa65c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -116,7 +119,7 @@ function goToTab(tabId) {
 </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -218,10 +221,10 @@ window.Quarto = {
 <section id="tldr" class="level2">
 <h2 class="anchored" data-anchor-id="tldr">TL;DR</h2>
 <ul>
-<li>Do three diagnostics seen in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">Third Tab</a></li>
+<li>Do three diagnostics seen in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">When CAN I?</a></li>
 <li>Check manual and adjusted <span class="math inline">\(R^2&gt;&gt;0\)</span></li>
 <li>Check residual standard error is small for the units and mean of your response variable</li>
-<li>Continue looking at traits by following in <a href="#" onclick="goToTab('tabset-1-5-tab'); return false;">Fifth Tab</a></li>
+<li>Continue looking at traits by following in <a href="#" onclick="goToTab('tabset-1-5-tab'); return false;">How to interpret?</a></li>
 </ul>
 <p>The regression of <span class="math inline">\(Y\)</span> on <span class="math inline">\(x\)</span> is the conditional mean <span class="math inline">\(E(Y|x) = m(x)\)</span>, where <span class="math inline">\(m(x)\)</span> can take any form, but in a linear regression, it takes this form: <span class="math display">\[\begin{gather} E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x) \text{ and } \\ var(Y|x) = \sigma^2 \end{gather}\]</span> where <span class="math inline">\(\beta_j\)</span> are the coefficients. Performing a regression means estimating <span class="math inline">\(\beta_j, ~ j = 0,..,k\)</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -235,7 +238,7 @@ window.Quarto = {
 <li>The sentence “regression to the mean” means if a variable is extreme on its first measurement, it will tend to be closer to the average on its second measurement and vice versa</li>
 <li>Linear actually means linear in the coefficients, i.e.&nbsp;not necessarily a straight line but a linear combination (i.e an additive function) of complex and non-linear functions of x, with the coefficients ‘out the front’<br>
 </li>
-<li>Additive function f is such that this holds <span class="math display">\[ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) \]</span> where <span class="math display">\[ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)\]</span> i.e.&nbsp;the coefficients of <span class="math inline">\(f(x)\)</span>. See the maths behind <a href="#" onclick="goToTab('tabset-1-9-tab'); return false;">Last Tab</a> for proof this holds for <span class="math inline">\(E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)\)</span></li>
+<li>Additive function f is such that this holds <span class="math display">\[ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) \]</span> where <span class="math display">\[ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)\]</span> i.e.&nbsp;the coefficients of <span class="math inline">\(f(x)\)</span>. See the maths behind <a href="#" onclick="goToTab('tabset-1-9-tab'); return false;">Maths</a> for proof this holds for <span class="math inline">\(E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)\)</span></li>
 </ul>
 </section>
 </div>
@@ -336,7 +339,7 @@ Note
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <section id="how-to-assess-if-my-lin-model-is-likely-a-lin-model" class="level3">
 <h3 class="anchored" data-anchor-id="how-to-assess-if-my-lin-model-is-likely-a-lin-model">How to assess if my lin model is likely a lin model?</h3>
-<p>Apart from doing everything in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">Third tab</a>, especially 1), there is also <span class="math inline">\(R^2\)</span> which is the coefficient of determination, measures the strength of the linear relationship between the traits and outcome and is between 0 and 1 i.e.&nbsp;the proportion of varY that is explained by your estimated m(x); an <span class="math inline">\(R^2&gt;&gt;0\)</span> indicates a closer fit of the model to the data, and the adjusted <span class="math inline">\(R^2\)</span> takes into account irrelevant predictors</p>
+<p>Apart from doing everything in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">When CAN I?</a>, especially 1), there is also <span class="math inline">\(R^2\)</span> which is the coefficient of determination, measures the strength of the linear relationship between the traits and outcome and is between 0 and 1 i.e.&nbsp;the proportion of varY that is explained by your estimated m(x); an <span class="math inline">\(R^2&gt;&gt;0\)</span> indicates a closer fit of the model to the data, and the adjusted <span class="math inline">\(R^2\)</span> takes into account irrelevant predictors</p>
 </section>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
@@ -405,6 +408,7 @@ F-statistic: 21.68 on 8 and 88 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h3 class="anchored" data-anchor-id="if-you-want-the-maths-behind-it">If you want the maths behind it</h3>
 <p>How is <span class="math inline">\(m(x)\)</span> an additive function? We know <span class="math inline">\(m(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)\)</span>. Let’s define <span class="math inline">\(f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x),\text{ where } v_1 = (\beta_0, \beta_1, ..., \beta_k)\)</span>; we need <span class="math inline">\(f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and } \\ f_{c*v_1}(x) = c*f_{v_1}(x)\)</span> to hold true.</p>
 <p>Proof: <span class="math display">\[
+{\small
 \begin{gather}
 f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x), ~ f_{v_2}(x) = \alpha_0 + \sum_{i=1}^k \alpha_ig_{i}(x) \text{  and } \\ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k) \implies \\
 v1+v2 = (\beta_0 + \alpha_0, \beta_1 + \alpha_1, ..., \beta_k + \alpha_k) \implies \\
@@ -412,6 +416,7 @@ f_{v_1+v_2}(x) = (\beta_0 + \alpha_0) + \sum_{i=1}^k (\beta_i+\alpha_i)g_{i}(x) 
 c*v1 = (c*\beta_0, c*\beta_1, ..., c*\beta_k) \implies \\
 f_{c*v_1}(x) = c*\beta_0 + \sum_{i=1}^k (c*\beta_i)g_{i}(x) = c*\beta_0 + c*\sum_{i=1}^k \beta_ig_{i}(x) = c(\beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)) = c*f_{v_1}(x) ~ \square
 \end{gather}
+}
 \]</span></p>
 </section>
 </div>
