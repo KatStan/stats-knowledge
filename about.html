@@ -70,6 +70,15 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+function goToTab(tabId) {
+  const tab = document.getElementById(tabId);
+  if (tab) {
+    tab.click();
+    tab.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+</script>
 
 
 <link rel="stylesheet" href="styles.css">

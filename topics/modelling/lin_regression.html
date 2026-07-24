@@ -105,6 +105,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script>
+function goToTab(tabId) {
+  const tab = document.getElementById(tabId);
+  if (tab) {
+    tab.click();
+    tab.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -181,14 +190,6 @@ window.Quarto = {
    
   <ul>
   <li><a href="#tldr" id="toc-tldr" class="nav-link active" data-scroll-target="#tldr">TL;DR</a></li>
-  <li><a href="#common-phrases-associated-with-linear-regression" id="toc-common-phrases-associated-with-linear-regression" class="nav-link" data-scroll-target="#common-phrases-associated-with-linear-regression">Common phrases associated with linear regression</a></li>
-  <li><a href="#when-do-i-use-a-linear-regression" id="toc-when-do-i-use-a-linear-regression" class="nav-link" data-scroll-target="#when-do-i-use-a-linear-regression">When do I use a linear regression?</a></li>
-  <li><a href="#sec-when-can" id="toc-sec-when-can" class="nav-link" data-scroll-target="#sec-when-can">When CAN I use this, what needs to hold up for me to even think about using it?</a></li>
-  <li><a href="#how-do-i-assess-if-my-lin-model-is-likely-a-lin-model" id="toc-how-do-i-assess-if-my-lin-model-is-likely-a-lin-model" class="nav-link" data-scroll-target="#how-do-i-assess-if-my-lin-model-is-likely-a-lin-model">How do I assess if my lin model is likely a lin model?</a></li>
-  <li><a href="#sec-interpret-lin" id="toc-sec-interpret-lin" class="nav-link" data-scroll-target="#sec-interpret-lin">How to interpret it once I know it’s a likely a lin model?</a></li>
-  <li><a href="#are-there-r-caveatsdefaults-i-need-to-know-about" id="toc-are-there-r-caveatsdefaults-i-need-to-know-about" class="nav-link" data-scroll-target="#are-there-r-caveatsdefaults-i-need-to-know-about">Are there R caveats/defaults I need to know about?</a></li>
-  <li><a href="#what-can-you-use-it-for-now" id="toc-what-can-you-use-it-for-now" class="nav-link" data-scroll-target="#what-can-you-use-it-for-now">What can you use it for now?</a></li>
-  <li><a href="#sec-maths-behind" id="toc-sec-maths-behind" class="nav-link" data-scroll-target="#sec-maths-behind">If you want the maths behind it</a></li>
   </ul>
 </nav>
     </div>
@@ -217,26 +218,30 @@ window.Quarto = {
 <section id="tldr" class="level2">
 <h2 class="anchored" data-anchor-id="tldr">TL;DR</h2>
 <ul>
-<li>Do three diagnostics seen in <a href="#sec-when-can" class="quarto-xref">Section&nbsp;4</a><br>
-</li>
+<li>Do three diagnostics seen in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">Third Tab</a></li>
 <li>Check manual and adjusted <span class="math inline">\(R^2&gt;&gt;0\)</span></li>
 <li>Check residual standard error is small for the units and mean of your response variable</li>
-<li>Continue looking at traits by following in <a href="#sec-interpret-lin" class="quarto-xref">Section&nbsp;6</a></li>
+<li>Continue looking at traits by following in <a href="#" onclick="goToTab('tabset-1-5-tab'); return false;">Fifth Tab</a></li>
 </ul>
 <p>The regression of <span class="math inline">\(Y\)</span> on <span class="math inline">\(x\)</span> is the conditional mean <span class="math inline">\(E(Y|x) = m(x)\)</span>, where <span class="math inline">\(m(x)\)</span> can take any form, but in a linear regression, it takes this form: <span class="math display">\[\begin{gather} E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x) \text{ and } \\ var(Y|x) = \sigma^2 \end{gather}\]</span> where <span class="math inline">\(\beta_j\)</span> are the coefficients. Performing a regression means estimating <span class="math inline">\(\beta_j, ~ j = 0,..,k\)</span>.</p>
-</section>
-<section id="common-phrases-associated-with-linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="common-phrases-associated-with-linear-regression">Common phrases associated with linear regression</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Common phrases</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">When?</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">When CAN I?</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">How to assess?</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href="">How to interpret?</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false" href="">Reporting</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false" href="">R caveats/defaults</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false" href="">What now?</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" role="tab" aria-controls="tabset-1-9" aria-selected="false" href="">Maths</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<section id="common-phrases-associated-with-linear-regression" class="level3">
+<h3 class="anchored" data-anchor-id="common-phrases-associated-with-linear-regression">Common phrases associated with linear regression</h3>
 <ul>
 <li>Regression in the dictionary means “a return to a former state”</li>
 <li>The sentence “regression to the mean” means if a variable is extreme on its first measurement, it will tend to be closer to the average on its second measurement and vice versa</li>
 <li>Linear actually means linear in the coefficients, i.e.&nbsp;not necessarily a straight line but a linear combination (i.e an additive function) of complex and non-linear functions of x, with the coefficients ‘out the front’<br>
 </li>
-<li>Additive function f is such that this holds <span class="math display">\[ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) \]</span> where <span class="math display">\[ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)\]</span> i.e.&nbsp;the coefficients of <span class="math inline">\(f(x)\)</span>. See the maths behind <a href="#sec-maths-behind" class="quarto-xref">Section&nbsp;9</a> for proof this holds for <span class="math inline">\(E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)\)</span></li>
+<li>Additive function f is such that this holds <span class="math display">\[ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) \]</span> where <span class="math display">\[ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)\]</span> i.e.&nbsp;the coefficients of <span class="math inline">\(f(x)\)</span>. See the maths behind <a href="#" onclick="goToTab('tabset-1-9-tab'); return false;">Last Tab</a> for proof this holds for <span class="math inline">\(E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)\)</span></li>
 </ul>
 </section>
-<section id="when-do-i-use-a-linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="when-do-i-use-a-linear-regression">When do I use a linear regression?</h2>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<section id="when-do-i-use-a-linear-regression" class="level3">
+<h3 class="anchored" data-anchor-id="when-do-i-use-a-linear-regression">When do I use a linear regression?</h3>
 <p>(a.k.a what question do I need answering so that the answer is “use a lin regression for that”?)</p>
 <ul>
 <li>you are interested in inferring a relationship between a variable/trait Y and a (vector of) variable/trait(s)<br>
@@ -258,8 +263,10 @@ Note
 </div>
 </div>
 </section>
-<section id="sec-when-can" class="level2">
-<h2 class="anchored" data-anchor-id="sec-when-can">When CAN I use this, what needs to hold up for me to even think about using it?</h2>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<section id="when-can-i-use-this-what-needs-to-hold-up-for-me-to-even-think-about-using-it" class="level3">
+<h3 class="anchored" data-anchor-id="when-can-i-use-this-what-needs-to-hold-up-for-me-to-even-think-about-using-it">When CAN I use this, what needs to hold up for me to even think about using it?</h3>
 <p>We have to check the assumptions hold. The assumptions are:<br>
 1) linear model for the mean, i.e.&nbsp;<span class="math inline">\(E(Y|x) = m(x)\)</span> is linear<br>
 2) <span class="math inline">\(var(\epsilon_i)= \sigma^2\)</span> i.e.&nbsp;var is the same for all <span class="math inline">\(i\)</span><br>
@@ -325,12 +332,16 @@ Note
 </div>
 </div>
 </section>
-<section id="how-do-i-assess-if-my-lin-model-is-likely-a-lin-model" class="level2">
-<h2 class="anchored" data-anchor-id="how-do-i-assess-if-my-lin-model-is-likely-a-lin-model">How do I assess if my lin model is likely a lin model?</h2>
-<p>Apart from doing everything in <a href="#sec-when-can" class="quarto-xref">Section&nbsp;4</a>, especially 1), there is also <span class="math inline">\(R^2\)</span> which is the coefficient of determination, measures the strength of the linear relationship between the traits and outcome and is between 0 and 1 i.e.&nbsp;the proportion of varY that is explained by your estimated m(x); an <span class="math inline">\(R^2&gt;&gt;0\)</span> indicates a closer fit of the model to the data, and the adjusted <span class="math inline">\(R^2\)</span> takes into account irrelevant predictors</p>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<section id="how-to-assess-if-my-lin-model-is-likely-a-lin-model" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-assess-if-my-lin-model-is-likely-a-lin-model">How to assess if my lin model is likely a lin model?</h3>
+<p>Apart from doing everything in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">Third tab</a>, especially 1), there is also <span class="math inline">\(R^2\)</span> which is the coefficient of determination, measures the strength of the linear relationship between the traits and outcome and is between 0 and 1 i.e.&nbsp;the proportion of varY that is explained by your estimated m(x); an <span class="math inline">\(R^2&gt;&gt;0\)</span> indicates a closer fit of the model to the data, and the adjusted <span class="math inline">\(R^2\)</span> takes into account irrelevant predictors</p>
 </section>
-<section id="sec-interpret-lin" class="level2">
-<h2 class="anchored" data-anchor-id="sec-interpret-lin">How to interpret it once I know it’s a likely a lin model?</h2>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<section id="how-to-interpret-it-once-i-know-its-a-likely-a-lin-model" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-interpret-it-once-i-know-its-a-likely-a-lin-model">How to interpret it once I know it’s a likely a lin model?</h3>
 <p>Normally you want to see whether the trait(s) are in a relationship with <span class="math inline">\(Y\)</span>, and you would do so by testing whether the coefficients next to those traits are statistically significantly different from 0.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(lpsa <span class="sc">~</span> lcavol <span class="sc">+</span> lweight <span class="sc">+</span> age <span class="sc">+</span> lbph <span class="sc">+</span> svi <span class="sc">+</span> lcp <span class="sc">+</span> gleason <span class="sc">+</span> pgg45, <span class="at">data =</span> prostate)</span>
@@ -368,8 +379,13 @@ F-statistic: 21.68 on 8 and 88 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Whether the intercept is significantly different from 0 or not matters for whatever your model represents i.e.&nbsp;the state of the outcome when all of your traits are 0 -&gt; I would use this as a reality check</p>
 <p>In terms of interpreting the output: <img src="../../images/lm_summary.png" class="img-fluid" alt="Summary output"></p>
 </section>
-<section id="are-there-r-caveatsdefaults-i-need-to-know-about" class="level2">
-<h2 class="anchored" data-anchor-id="are-there-r-caveatsdefaults-i-need-to-know-about">Are there R caveats/defaults I need to know about?</h2>
+</div>
+<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<p>Depends on what type your data is and whether it was scaled</p>
+</div>
+<div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
+<section id="r-caveatsdefaults-i-need-to-know-about" class="level3">
+<h3 class="anchored" data-anchor-id="r-caveatsdefaults-i-need-to-know-about">R caveats/defaults I need to know about?</h3>
 <ul>
 <li>uses ordinary least squares which doesn’t assume any distribution for <span class="math inline">\(Y_i\)</span></li>
 <li>implied intercept term unless you tell it otherwise</li>
@@ -377,12 +393,16 @@ F-statistic: 21.68 on 8 and 88 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li>factor/categorical/continuous in the formula might change what the null is, hence what statistically different actually means - see Anova f-test in testing TBA</li>
 </ul>
 </section>
-<section id="what-can-you-use-it-for-now" class="level2">
-<h2 class="anchored" data-anchor-id="what-can-you-use-it-for-now">What can you use it for now?</h2>
+</div>
+<div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
+<section id="what-can-you-use-it-for-now" class="level3">
+<h3 class="anchored" data-anchor-id="what-can-you-use-it-for-now">What can you use it for now?</h3>
 <p>You can use it for predicting, now for a given <span class="math inline">\(x_i\)</span> you care about, determine a <span class="math inline">\(Y_i\)</span></p>
 </section>
-<section id="sec-maths-behind" class="level2">
-<h2 class="anchored" data-anchor-id="sec-maths-behind">If you want the maths behind it</h2>
+</div>
+<div id="tabset-1-9" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-9-tab">
+<section id="if-you-want-the-maths-behind-it" class="level3">
+<h3 class="anchored" data-anchor-id="if-you-want-the-maths-behind-it">If you want the maths behind it</h3>
 <p>How is <span class="math inline">\(m(x)\)</span> an additive function? We know <span class="math inline">\(m(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)\)</span>. Let’s define <span class="math inline">\(f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x),\text{ where } v_1 = (\beta_0, \beta_1, ..., \beta_k)\)</span>; we need <span class="math inline">\(f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and } \\ f_{c*v_1}(x) = c*f_{v_1}(x)\)</span> to hold true.</p>
 <p>Proof: <span class="math display">\[
 \begin{gather}
@@ -393,6 +413,10 @@ c*v1 = (c*\beta_0, c*\beta_1, ..., c*\beta_k) \implies \\
 f_{c*v_1}(x) = c*\beta_0 + \sum_{i=1}^k (c*\beta_i)g_{i}(x) = c*\beta_0 + c*\sum_{i=1}^k \beta_ig_{i}(x) = c(\beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)) = c*f_{v_1}(x) ~ \square
 \end{gather}
 \]</span></p>
+</section>
+</div>
+</div>
+</div>
 
 
 </section>
