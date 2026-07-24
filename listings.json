@@ -3,6 +3,7 @@
     "listing": "/index.html",
     "items": [
       "/topics/visualisations/boxplots.html",
+      "/topics/modelling/lin_regression.html",
       "/topics/others_tba/topic1.html"
     ]
   }

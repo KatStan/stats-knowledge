@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Box plots – Stats knowledgebase</title>
+<title>(Multivariable) linear regression – Stats knowledgebase</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -180,8 +180,15 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#when-to-use-this" id="toc-when-to-use-this" class="nav-link active" data-scroll-target="#when-to-use-this">When to use this?</a></li>
-  <li><a href="#interpreting-a-box-plot" id="toc-interpreting-a-box-plot" class="nav-link" data-scroll-target="#interpreting-a-box-plot">Interpreting a box plot</a></li>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link active" data-scroll-target="#tldr">TL;DR</a></li>
+  <li><a href="#common-phrases-associated-with-linear-regression" id="toc-common-phrases-associated-with-linear-regression" class="nav-link" data-scroll-target="#common-phrases-associated-with-linear-regression">Common phrases associated with linear regression</a></li>
+  <li><a href="#when-do-i-use-a-linear-regression" id="toc-when-do-i-use-a-linear-regression" class="nav-link" data-scroll-target="#when-do-i-use-a-linear-regression">When do I use a linear regression?</a></li>
+  <li><a href="#sec-when-can" id="toc-sec-when-can" class="nav-link" data-scroll-target="#sec-when-can">When CAN I use this, what needs to hold up for me to even think about using it?</a></li>
+  <li><a href="#how-do-i-assess-if-my-lin-model-is-likely-a-lin-model" id="toc-how-do-i-assess-if-my-lin-model-is-likely-a-lin-model" class="nav-link" data-scroll-target="#how-do-i-assess-if-my-lin-model-is-likely-a-lin-model">How do I assess if my lin model is likely a lin model?</a></li>
+  <li><a href="#sec-interpret-lin" id="toc-sec-interpret-lin" class="nav-link" data-scroll-target="#sec-interpret-lin">How to interpret it once I know it’s a likely a lin model?</a></li>
+  <li><a href="#are-there-r-caveatsdefaults-i-need-to-know-about" id="toc-are-there-r-caveatsdefaults-i-need-to-know-about" class="nav-link" data-scroll-target="#are-there-r-caveatsdefaults-i-need-to-know-about">Are there R caveats/defaults I need to know about?</a></li>
+  <li><a href="#what-can-you-use-it-for-now" id="toc-what-can-you-use-it-for-now" class="nav-link" data-scroll-target="#what-can-you-use-it-for-now">What can you use it for now?</a></li>
+  <li><a href="#sec-maths-behind" id="toc-sec-maths-behind" class="nav-link" data-scroll-target="#sec-maths-behind">If you want the maths behind it</a></li>
   </ul>
 </nav>
     </div>
@@ -190,7 +197,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Box plots</h1>
+<h1 class="title">(Multivariable) linear regression</h1>
 </div>
 
 
@@ -207,135 +214,190 @@ window.Quarto = {
 </header>
 
 
-<p>A box plot, or box-and-whiskers plot, is a graphical summary of all the observations of a single numerical trait in your data. It’s a quick way of seeing the spread (not the distribution tho!) and the 5 basic summaries:<br>
-- minimum<br>
-- first quartile<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> (25%)<br>
-- median (second quartile, 50%)<br>
-- third quartile (75%)<br>
-- maximum</p>
+<section id="tldr" class="level2">
+<h2 class="anchored" data-anchor-id="tldr">TL;DR</h2>
+<ul>
+<li>Do three diagnostics seen in <a href="#sec-when-can" class="quarto-xref">Section&nbsp;4</a><br>
+</li>
+<li>Check adjusted <span class="math inline">\(R^2&gt;&gt;0\)</span></li>
+<li>Check residual standard error is small for the units and mean of your response variable</li>
+<li>Continue looking at traits by following in <a href="#sec-interpret-lin" class="quarto-xref">Section&nbsp;6</a></li>
+</ul>
+<p>The regression of <span class="math inline">\(Y\)</span> on <span class="math inline">\(x\)</span> is the conditional mean <span class="math inline">\(E(Y|x) = m(x)\)</span>, where <span class="math inline">\(m(x)\)</span> can take any form, but in a linear regression, it takes this form: <span class="math display">\[\begin{gather} E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x) \text{ and } \\ var(Y|x) = \sigma^2 \end{gather}\]</span> where <span class="math inline">\(\beta_j\)</span> are the coefficients. Performing a regression means estimating <span class="math inline">\(\beta_j, ~ j = 0,..,k\)</span>.</p>
+</section>
+<section id="common-phrases-associated-with-linear-regression" class="level2">
+<h2 class="anchored" data-anchor-id="common-phrases-associated-with-linear-regression">Common phrases associated with linear regression</h2>
+<ul>
+<li>Regression in the dictionary means “a return to a former state”</li>
+<li>The sentence “regression to the mean” means if a variable is extreme on its first measurement, it will tend to be closer to the average on its second measurement and vice versa</li>
+<li>Linear actually means linear in the coefficients, i.e.&nbsp;not necessarily a straight line but a linear combination (i.e an additive function) of complex and non-linear functions of x, with the coefficients ‘out the front’<br>
+</li>
+<li>Additive function f is such that this holds <span class="math display">\[ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) \]</span> where <span class="math display">\[ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)\]</span> i.e.&nbsp;the coefficients of <span class="math inline">\(f(x)\)</span>. See the maths behind <a href="#sec-maths-behind" class="quarto-xref">Section&nbsp;9</a> for proof this holds for <span class="math inline">\(E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)\)</span></li>
+</ul>
+</section>
+<section id="when-do-i-use-a-linear-regression" class="level2">
+<h2 class="anchored" data-anchor-id="when-do-i-use-a-linear-regression">When do I use a linear regression?</h2>
+<p>(a.k.a what question do I need answering so that the answer is “use a lin regression for that”?)</p>
+<ul>
+<li>you are interested in inferring a relationship between a variable/trait Y and a (vector of) variable/trait(s)<br>
+</li>
+<li>you are interested in predicting Y based on a new value of the variable/trait(s)</li>
+</ul>
+<p>This explanation leads to treating Y as a random variable and x as the known. Y is modelled as a <strong>deterministic</strong> function <span class="math inline">\(m(x)\)</span> plus a mean-zero noise term i.e.&nbsp; the observation <span class="math inline">\((x_i, Y_i)\)</span> satisfies <span class="math inline">\(Y_i = m(x_i) + \epsilon_i\)</span>, where for all <span class="math inline">\(i\)</span>, <span class="math inline">\(\epsilon_i\)</span> are independent, <span class="math inline">\(E(\epsilon_i)=0\)</span> and <span class="math inline">\(var(\epsilon_i)= \sigma^2\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(var(\epsilon_i)= \sigma_i^2\)</span>, it’s called heteroscedasticity, handling this TBA</p>
+</div>
+</div>
+</section>
+<section id="sec-when-can" class="level2">
+<h2 class="anchored" data-anchor-id="sec-when-can">When CAN I use this, what needs to hold up for me to even think about using it?</h2>
+<p>We have to check the assumptions hold. The assumptions are:<br>
+1) linear model for the mean, i.e.&nbsp;<span class="math inline">\(E(Y|x) = m(x)\)</span> is linear<br>
+2) <span class="math inline">\(var(\epsilon_i)= \sigma^2\)</span> i.e.&nbsp;var is the same for all <span class="math inline">\(i\)</span><br>
+3) the residue (error, noise) normality assumption of <span class="math inline">\(\epsilon_i \sim N(0, \sigma^2)\)</span> we have to introduce if we would like to know how well our coefficients are estimated (for CIs and testing hypotheses like whether the coeffs differ from 0 i.e.&nbsp;where Y is varying of x)</p>
+<p>To check these assumptions, you need to fit the model first, and then check the assumptions. For each assumption you do:<br>
+1) Plot <strong>observed</strong> vs fitted values (each data point is described by the observed <span class="math inline">\(Y_i\)</span> and by the value <span class="math inline">\(m(x_i)\)</span> you have come to i.e.&nbsp;the value on your estimated line), you are hoping to see points scattered randomly along the diagonal line of y = x<br>
+2) Plot <strong>residuals</strong> vs fitted values (each data point is described by the residual - observed <span class="math inline">\(Y_i\)</span> minus <span class="math inline">\(m(x_i)\)</span> - and <span class="math inline">\(m(x_i)\)</span>), you are hoping to see an equal amount of points above and below 0 at similar distances from 0<br>
+3) plot a normal QQ plot of the residuals to check whether the distribution of residuals is <span class="math inline">\(\sim N(0, \sigma^2)\)</span> - you’re hoping to see all the points on the diagonal</p>
+<p>Note: each <span class="math inline">\(Y_i\)</span> depends on <span class="math inline">\(x_i\)</span>, the normality assumption is per <span class="math inline">\(x_i\)</span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(datasets) <span class="co"># for loading iris</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># for plotting</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(tidyverse))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(iris)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">url</span>(<span class="st">"https://github.com/cran/ElemStatLearn/raw/refs/heads/master/data/prostate.RData"</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(lpsa <span class="sc">~</span> lcavol <span class="sc">+</span> lweight <span class="sc">+</span> age <span class="sc">+</span> lbph <span class="sc">+</span> svi <span class="sc">+</span> lcp <span class="sc">+</span> gleason <span class="sc">+</span> pgg45, <span class="at">data =</span> prostate)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># brief transformation so we see only two groups of Species (instead of three) </span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(Species <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"setosa"</span>, <span class="st">"versicolor"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Petal.Length)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># looking at 1)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(lm1), prostate<span class="sc">$</span>lpsa, <span class="at">xlab =</span> <span class="st">"Fitted"</span>, <span class="at">ylab =</span> <span class="st">"Observed"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="boxplots_files/figure-html/iris_2_species_box_plot-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lin_regression_files/figure-html/lm_diagnostics-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-</div>
-<p>Even without knowing what each part of a boxplot is, you can tell there seems to be some kind of difference worth investigating further.</p>
-<section id="when-to-use-this" class="level3">
-<h3 class="anchored" data-anchor-id="when-to-use-this">When to use this?</h3>
-<p>I’d use this more for <strong>quick comparisons</strong> between groups with the same trait of interest.<br>
-Do <strong>not</strong> over-interpret, there is no statistical test here claiming these 2+ groups are statistically different from each other! More on that in <a href="">Statistical Tests TBA</a>. There are <em>notched</em> box plots that somewhat coincide with 95% CIs for medians, but you would need to test for a difference between medians regardless.<br>
-<strong><em>Caveats:</em></strong><br>
-- Box plots also hide info like distribution and sample size. If I would like to see the <strong>distribution</strong>, I find violin plots<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> more useful. <strong>Sample size</strong> could be seen with adding each data point with e.g.&nbsp;jitter.<br>
-- If you feel strongly about about how the median or quartiles are calculated, be wary! Check how the box plot is calculating it (R has 9 types of quantile calculations, see <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/quantile">here</a>). With a larger<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> number observations, they converge, but on smaller datasets you can see a difference.</p>
-</section>
-<section id="interpreting-a-box-plot" class="level3">
-<h3 class="anchored" data-anchor-id="interpreting-a-box-plot">Interpreting a box plot</h3>
-<p>Now let’s look at the details of a box plot.</p>
-<div class="quarto-figure quarto-figure-center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># looking at 2)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(lm1), <span class="fu">residuals</span>(lm1), <span class="at">xlab =</span> <span class="st">"Fitted"</span>, <span class="at">ylab =</span> <span class="st">"Residuals"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
 <figure class="figure">
-<p><img src="../../images/boxplot.png" class="img-fluid figure-img"></p>
-<figcaption>Box plot characteristics</figcaption>
+<p><img src="lin_regression_files/figure-html/lm_diagnostics-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-<p>The box starts and ends (called hinges) with the <span class="math inline">\(1^{st}\)</span> and <span class="math inline">\(3^{rd}\)</span> quartile, with the median denoted inside the box. The length of the box is called the interquartile range and is commonly abbreviated as IQR. It’s calculated as <span class="math inline">\(3^{rd} quartile-1^{st} quartile\)</span>.<br>
-The boxplot function you are working with determines how long the whiskers will be. <strong>Check the docs for your function of interest!</strong> Above I used <code>ggplot2::geom_boxplot</code> that states:</p>
-<blockquote class="blockquote">
-<p>The upper whisker extends from the hinge to the largest value no further than 1.5 * IQR from the hinge (where IQR is the inter-quartile range, or distance between the first and third quartiles). The lower whisker extends from the hinge to the smallest value at most 1.5 * IQR of the hinge. Data beyond the end of the whiskers are called “outlying” points and are plotted individually.</p>
-</blockquote>
-<p>So for <code>ggplot2::geom_boxplot</code>, the right whisker extends to the last datapoint that is <strong>no further</strong> than 1.5 * IQR from the right hinge, and outliers are considered everything greater. Analogous for the left whisker.<br>
-Other box plot functions could e.g.&nbsp;just extend the whiskers to the min and max datapoints, meaning there are no outliers in that scenario.</p>
-<p>On real data:</p>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I personally like this built-in version of fitted vs observables more, due to</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the fitted curve, you'd want it to follow y = 0 as much as possible (not easy</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># when you have a smaller dataset, then it might be distracting)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1, <span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lin_regression_files/figure-html/lm_diagnostics-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># looking at 3)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Q-Q plots compare quantiles of the observed data to the quantiles of your theoretical distribution</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># qqnorm compares to N(0,1)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">residuals</span>(lm1))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># default distribution based on which the line is drawn is N(0,1)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># it's just a line that draws through the 1st and 3rd quantile (because we believe</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># that all the points from our data coincide with data points in this distribution, </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># then so do the quantiles in our data and the theoretical quantiles, and we choose</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># to make a line through those, so that they are not favoured by a different mean/outliers)</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(<span class="fu">residuals</span>(lm1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lin_regression_files/figure-html/lm_diagnostics-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="how-do-i-assess-if-my-lin-model-is-likely-a-lin-model" class="level2">
+<h2 class="anchored" data-anchor-id="how-do-i-assess-if-my-lin-model-is-likely-a-lin-model">How do I assess if my lin model is likely a lin model?</h2>
+<p>Apart from doing everything in <a href="#sec-when-can" class="quarto-xref">Section&nbsp;4</a>, especially 1), there is also <span class="math inline">\(R^2\)</span> which is the coefficient of determination, measures the strength of the linear relationship between the traits and outcome and is between 0 and 1 i.e.&nbsp;the proportion of varY that is explained by your estimated m(x); an <span class="math inline">\(R^2&gt;&gt;0\)</span> indicates a closer fit of the model to the data, and the adjusted <span class="math inline">\(R^2\)</span> takes into account irrelevant predictors</p>
+</section>
+<section id="sec-interpret-lin" class="level2">
+<h2 class="anchored" data-anchor-id="sec-interpret-lin">How to interpret it once I know it’s a likely a lin model?</h2>
+<p>Normally you want to see whether the trait(s) are in a relationship with <span class="math inline">\(Y\)</span>, and you would do so by testing whether the coefficients next to those traits are statistically significantly different from 0.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>setosas <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(Species <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"setosa"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">point_type =</span> <span class="st">"data_point"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>five_quantiles <span class="ot">&lt;-</span> <span class="fu">quantile</span>(setosas<span class="sc">$</span>Petal.Length)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>quartiles <span class="ot">&lt;-</span> five_quantiles[<span class="fu">c</span>(<span class="st">"25%"</span>, <span class="st">"50%"</span>, <span class="st">"75%"</span>)]</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>IQR <span class="ot">&lt;-</span> quartiles[[<span class="st">"75%"</span>]] <span class="sc">-</span> quartiles[[<span class="st">"25%"</span>]] </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># the numbers that are compared to data points to determine whisker ends</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>fences <span class="ot">&lt;-</span> <span class="fu">c</span>(quartiles[[<span class="st">"25%"</span>]] <span class="sc">-</span> <span class="fl">1.5</span><span class="sc">*</span>IQR, quartiles[[<span class="st">"75%"</span>]] <span class="sc">+</span> <span class="fl">1.5</span><span class="sc">*</span>IQR)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>summaries_to_overlay <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Species =</span> <span class="st">"setosa"</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">Petal.Length =</span> <span class="fu">c</span>(quartiles, fences),</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">point_type =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"quartile"</span>, <span class="fu">length</span>(quartiles)),</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">rep</span>(<span class="st">"whisker_ends"</span>, <span class="fu">length</span>(fences))</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                 )</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>point_type_colours <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"data_point"</span>   <span class="ot">=</span> <span class="st">"orange"</span>, </span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"quartile"</span>     <span class="ot">=</span> <span class="st">"red"</span>, </span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"whisker_ends"</span> <span class="ot">=</span> <span class="st">"green"</span>)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>point_type_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"data_point"</span>   <span class="ot">=</span> <span class="st">"Data points"</span>, </span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"quartile"</span>     <span class="ot">=</span> <span class="st">"Quartiles (Q1-3)"</span>, </span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"whisker_ends"</span> <span class="ot">=</span> <span class="st">"Hinges +/- 1.5*IQR"</span>)</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>point_type_shapes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"data_point"</span>     <span class="ot">=</span> <span class="dv">16</span>, <span class="co">#"dot", </span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"quartile"</span>     <span class="ot">=</span> <span class="dv">15</span>, <span class="co"># "square", </span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"whisker_ends"</span> <span class="ot">=</span> <span class="dv">18</span> <span class="co">#"diamond"</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                       )</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> setosas, </span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Petal.Length, </span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> Species)) <span class="sc">+</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># each individual data point will be seen by only jittering vertically, </span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># not horizontally thanks to width = 0</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">color =</span> point_type,</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>                            <span class="at">shape =</span> point_type), </span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>              <span class="at">size=</span><span class="dv">1</span>, <span class="at">alpha=</span><span class="fl">0.9</span>, <span class="at">width =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># quartiles are red squares</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the +/- 1.5*IQR are green diamonds, making it easier to see why some are</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># outliers, and which datapoints have been "chosen" for whisker endings</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> summaries_to_overlay, </span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>             <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Petal.Length, </span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>                           <span class="at">y =</span> Species, </span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>                           <span class="at">color =</span> point_type,</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>                           <span class="at">shape =</span> point_type), </span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span> </span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Legend"</span>,</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>       <span class="at">shape =</span> <span class="st">"Legend"</span>) <span class="sc">+</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> point_type_colours,</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> point_type_labels) <span class="sc">+</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> point_type_shapes,</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> point_type_labels)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="boxplots_files/figure-html/iris_example_box_plot-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(lpsa <span class="sc">~</span> lcavol <span class="sc">+</span> lweight <span class="sc">+</span> age <span class="sc">+</span> lbph <span class="sc">+</span> svi <span class="sc">+</span> lcp <span class="sc">+</span> gleason <span class="sc">+</span> pgg45, <span class="at">data =</span> prostate)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = lpsa ~ lcavol + lweight + age + lbph + svi + lcp + 
+    gleason + pgg45, data = prostate)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.76644 -0.35510 -0.00328  0.38087  1.55770 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  0.181561   1.320568   0.137  0.89096    
+lcavol       0.564341   0.087833   6.425 6.55e-09 ***
+lweight      0.622020   0.200897   3.096  0.00263 ** 
+age         -0.021248   0.011084  -1.917  0.05848 .  
+lbph         0.096713   0.057913   1.670  0.09848 .  
+svi          0.761673   0.241176   3.158  0.00218 ** 
+lcp         -0.106051   0.089868  -1.180  0.24115    
+gleason      0.049228   0.155341   0.317  0.75207    
+pgg45        0.004458   0.004365   1.021  0.31000    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.6995 on 88 degrees of freedom
+Multiple R-squared:  0.6634,    Adjusted R-squared:  0.6328 
+F-statistic: 21.68 on 8 and 88 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-</div>
+<p>If some coefficients are not so different from 0, you might want to consider a simpler model without these traits included, and test whether the two nested models are the same, and then proceed with the simpler one (o/w if they are significantly different, proceed with the more complex model) - see Anova in testing TBA</p>
+<p>Whether the intercept is significantly different from 0 or not matters for whatever your model represents i.e.&nbsp;the state of the outcome when all of your traits are 0 -&gt; I would use this as a reality check</p>
+<p>In terms of interpreting the output: -incoming image</p>
+</section>
+<section id="are-there-r-caveatsdefaults-i-need-to-know-about" class="level2">
+<h2 class="anchored" data-anchor-id="are-there-r-caveatsdefaults-i-need-to-know-about">Are there R caveats/defaults I need to know about?</h2>
+<ul>
+<li>uses ordinary least squares which doesn’t assume any distribution for <span class="math inline">\(Y_i\)</span></li>
+<li>implied intercept term unless you tell it otherwise</li>
+<li>Non-NULL weights can be used to indicate that different observations have different variances (<span class="math inline">\(\epsilon_i\)</span>), see more in <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm">details then</a></li>
+<li>factor/categorical/continuous in the formula might change what the null is, hence what statistically different actually means - see Anova f-test in testing TBA</li>
+</ul>
+</section>
+<section id="what-can-you-use-it-for-now" class="level2">
+<h2 class="anchored" data-anchor-id="what-can-you-use-it-for-now">What can you use it for now?</h2>
+<p>You can use it for predicting, now for a given <span class="math inline">\(x_i\)</span> you care about, determine a <span class="math inline">\(Y_i\)</span></p>
+</section>
+<section id="sec-maths-behind" class="level2">
+<h2 class="anchored" data-anchor-id="sec-maths-behind">If you want the maths behind it</h2>
+<p>How is <span class="math inline">\(m(x)\)</span> an additive function? We know <span class="math inline">\(m(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)\)</span>. Let’s define <span class="math inline">\(f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x),\text{ where } v_1 = (\beta_0, \beta_1, ..., \beta_k)\)</span>; we need <span class="math inline">\(f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and } \\ f_{c*v_1}(x) = c*f_{v_1}(x)\)</span> to hold true.</p>
+<p>Proof: <span class="math display">\[
+\begin{gather}
+f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x), ~ f_{v_2}(x) = \alpha_0 + \sum_{i=1}^k \alpha_ig_{i}(x) \text{  and } \\ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k) \implies \\
+v1+v2 = (\beta_0 + \alpha_0, \beta_1 + \alpha_1, ..., \beta_k + \alpha_k) \implies \\
+f_{v_1+v_2}(x) = (\beta_0 + \alpha_0) + \sum_{i=1}^k (\beta_i+\alpha_i)g_{i}(x) = \beta_0  + \sum_{i=1}^k \beta_ig_{i}(x) + \alpha_0 + \sum_{i=1}^k \alpha_ig_{i}(x) = f_{v_1}(x) + f_{v_2}(x) ~ \square \\
+c*v1 = (c*\beta_0, c*\beta_1, ..., c*\beta_k) \implies \\
+f_{c*v_1}(x) = c*\beta_0 + \sum_{i=1}^k (c*\beta_i)g_{i}(x) = c*\beta_0 + c*\sum_{i=1}^k \beta_ig_{i}(x) = c(\beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)) = c*f_{v_1}(x) ~ \square
+\end{gather}
+\]</span></p>
 
 
 </section>
 
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>25% of your observations are numerically less than this number<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>to be a link soon<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>In practice, larger should be n&gt;30, but take that with a grain of salt<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
