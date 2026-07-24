@@ -12,6 +12,8 @@ website:
 
 format:
   html:
+    include-in-header:
+      - file: js/custom/tabset_functions.html
     theme:
       - cosmo
       - brand

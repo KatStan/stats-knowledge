@@ -4,16 +4,19 @@ format: html
 ---
 
 ## TL;DR
--  Do three diagnostics seen in @sec-when-can  
+-  Do three diagnostics seen in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">Third Tab</a>
 -  Check manual and adjusted $R^2>>0$
 -  Check residual standard error is small for the units and mean of your response variable 
--  Continue looking at traits by following in @sec-interpret-lin  
+-  Continue looking at traits by following in <a href="#" onclick="goToTab('tabset-1-5-tab'); return false;">Fifth Tab</a>  
 
 The regression of $Y$ on $x$ is the conditional mean $E(Y|x) = m(x)$, where $m(x)$ can take any form,
 but in a linear regression, it takes this form: $$\begin{gather} E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x) \text{ and } \\ var(Y|x) = \sigma^2 \end{gather}$$ where $\beta_j$ are the coefficients.
 Performing a regression means estimating $\beta_j, ~ j = 0,..,k$. 
 
-## Common phrases associated with linear regression
+::: {.panel-tabset}
+
+## Common phrases 
+### Common phrases associated with linear regression
 -  Regression in the dictionary means "a return to a former state"
 -  The sentence "regression to the mean" means if a variable is extreme on its 
 first measurement, it will tend to be closer to the average on its second measurement
@@ -21,10 +24,11 @@ and vice versa
 -  Linear actually means linear in the coefficients, i.e. not necessarily a straight
 line but a linear combination (i.e an additive function) of complex and non-linear
 functions of x, with the coefficients 'out the front'  
--  Additive function f is such that this holds $$ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) $$ where $$ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)$$ i.e. the coefficients of $f(x)$. See the maths behind @sec-maths-behind for proof this holds for $E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)$
+-  Additive function f is such that this holds $$ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) $$ where $$ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)$$ i.e. the coefficients of $f(x)$. See the maths behind <a href="#" onclick="goToTab('tabset-1-9-tab'); return false;">Last Tab</a> for proof this holds for $E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)$
 
 
-## When do I use a linear regression?
+## When?
+### When do I use a linear regression?
 (a.k.a what question do I need answering so that the answer is "use a lin regression for that"?)  
 
 -  you are interested in inferring a relationship between a variable/trait Y and a (vector of)
@@ -40,7 +44,8 @@ $\epsilon_i$ are independent, $E(\epsilon_i)=0$ and $var(\epsilon_i)= \sigma^2$.
 If $var(\epsilon_i)= \sigma_i^2$, it's called heteroscedasticity, handling this TBA
 :::
 
-## When CAN I use this, what needs to hold up for me to even think about using it? {#sec-when-can}
+## When CAN I? {#sec-when-can}
+### When CAN I use this, what needs to hold up for me to even think about using it? 
 We have to check the assumptions hold. The assumptions are:  
 1)  linear model for the mean, i.e. $E(Y|x) = m(x)$ is linear  
 2)  $var(\epsilon_i)= \sigma^2$ i.e. var is the same for all $i$  
@@ -90,14 +95,16 @@ qqnorm(residuals(lm1))
 qqline(residuals(lm1))
 ```
 
-## How do I assess if my lin model is likely a lin model?
-Apart from doing everything in @sec-when-can, especially 1), there is also $R^2$
+## How to assess?
+### How to assess if my lin model is likely a lin model?
+Apart from doing everything in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">Third tab</a>, especially 1), there is also $R^2$
 which is the coefficient of determination, measures the strength of the linear relationship
 between the traits and outcome and is between 0 and 1 i.e. the proportion of varY
 that is explained by your estimated m(x); an $R^2>>0$ indicates a closer fit of 
 the model to the data, and the adjusted $R^2$ takes into account irrelevant predictors 
 
-## How to interpret it once I know it's a likely a lin model? {#sec-interpret-lin}  
+## How to interpret? {#sec-interpret-lin}  
+### How to interpret it once I know it's a likely a lin model?
 Normally you want to see whether the trait(s) are in a relationship with $Y$, and
 you would do so by testing whether the coefficients next to those traits are 
 statistically significantly different from 0. 
@@ -121,22 +128,27 @@ your model represents i.e. the state of the outcome when all of your traits are
 0 -> I would use this as a reality check
 
 In terms of interpreting the output:
-![Summary output](../../images/lm_summary.png)
+![Summary output](../../images/lm_summary.png)  
 
+## Reporting   
+Depends on what type your data is and whether it was scaled 
 
-## Are there R caveats/defaults I need to know about?
+## R caveats/defaults 
+### R caveats/defaults I need to know about?
 - uses ordinary least squares which doesn't assume any distribution for $Y_i$
 - implied intercept term unless you tell it otherwise
 - Non-NULL weights can be used to indicate that different observations have different variances
 ($\epsilon_i$), see more in [details then](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm)
 - factor/categorical/continuous in the formula might change what the null is, hence what statistically different actually means - see Anova f-test in testing TBA
 
-## What can you use it for now? 
+## What now? 
+### What can you use it for now?
 You can use it for predicting, now for a given $x_i$ you care about, determine a
 $Y_i$
 
 
-## If you want the maths behind it {#sec-maths-behind}
+## Maths {#sec-maths-behind}
+### If you want the maths behind it
 How is $m(x)$ an additive function? We know $m(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)$. Let's define $f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x),\text{ where } v_1 = (\beta_0, \beta_1, ..., \beta_k)$; we need $f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and } \\ f_{c*v_1}(x) = c*f_{v_1}(x)$ to hold true. 
 
 Proof: 
@@ -149,3 +161,5 @@ c*v1 = (c*\beta_0, c*\beta_1, ..., c*\beta_k) \implies \\
 f_{c*v_1}(x) = c*\beta_0 + \sum_{i=1}^k (c*\beta_i)g_{i}(x) = c*\beta_0 + c*\sum_{i=1}^k \beta_ig_{i}(x) = c(\beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)) = c*f_{v_1}(x) ~ \square
 \end{gather}
 $$
+
+:::
