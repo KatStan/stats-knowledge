@@ -5,7 +5,7 @@ format: html
 
 ## TL;DR
 -  Do three diagnostics seen in @sec-when-can  
--  Check adjusted $R^2>>0$
+-  Check manual and adjusted $R^2>>0$
 -  Check residual standard error is small for the units and mean of your response variable 
 -  Continue looking at traits by following in @sec-interpret-lin  
 
@@ -121,7 +121,8 @@ your model represents i.e. the state of the outcome when all of your traits are
 0 -> I would use this as a reality check
 
 In terms of interpreting the output:
--incoming image 
+![Summary output](../../images/lm_summary.png)
+
 
 ## Are there R caveats/defaults I need to know about?
 - uses ordinary least squares which doesn't assume any distribution for $Y_i$
