@@ -6,8 +6,10 @@ format: html
 ## TL;DR
 -  Do three diagnostics seen in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">When CAN I?</a>
 -  Check manual and adjusted $R^2>>0$
+-  The residuals summary has a median close to zero (in units of response var) 
 -  Check residual standard error is small for the units and mean of your response variable 
--  Continue looking at traits by following in <a href="#" onclick="goToTab('tabset-1-5-tab'); return false;">How to interpret?</a>  
+-  Continue looking at traits by following <a href="#" onclick="goToTab('tabset-1-5-tab'); return false;">How to interpret?</a>   
+-  When you're happy with the selected traits, report, use the guide example in <a href="#" onclick="goToTab('tabset-1-6-tab'); return false;">Reporting</a>   
 
 The regression of $Y$ on $x$ is the conditional mean $E(Y|x) = m(x)$, where $m(x)$ can take any form,
 but in a linear regression, it takes this form: $$\begin{gather} E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x) \text{ and } \\ var(Y|x) = \sigma^2 \end{gather}$$ where $\beta_j$ are the coefficients.
@@ -97,11 +99,18 @@ qqline(residuals(lm1))
 
 ## How to assess?
 ### How to assess if my lin model is likely a lin model?
-Apart from doing everything in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">When CAN I?</a>, especially 1), there is also $R^2$
-which is the coefficient of determination, measures the strength of the linear relationship
+Apart from doing everything in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">When CAN I?</a>, especially 1), there is also:
+-  The residuals summary should have a median around 0 in your reponses's units, otherwise
+it might indicate your model is misspecified (should be confirmed with Q-Q plot)
+-  $R^2$, which is the coefficient of determination, measures the strength of the linear relationship
 between the traits and outcome and is between 0 and 1 i.e. the proportion of varY
 that is explained by your estimated m(x); an $R^2>>0$ indicates a closer fit of 
-the model to the data, and the adjusted $R^2$ takes into account irrelevant predictors 
+the model to the data, and the adjusted $R^2$ takes into account irrelevant predictors.  
+-  The Residual standard error should be small, close to 0 in your response's units  
+-  Overall p-value of the F-statistic test should tell you it's a better model than no model
+
+The output:
+![Summary output](../../images/lm_summary.png) 
 
 ## How to interpret? {#sec-interpret-lin}  
 ### How to interpret it once I know it's a likely a lin model?
@@ -117,7 +126,6 @@ summary(lm1)
 
 ```
 
-
 If some coefficients are not so different from 0, you might want to consider 
 a simpler model without these traits included, and test whether the two nested
 models are the same, and then proceed with the simpler one (o/w if they are 
@@ -127,8 +135,7 @@ Whether the intercept is significantly different from 0 or not matters for whate
 your model represents i.e. the state of the outcome when all of your traits are
 0 -> I would use this as a reality check
 
-In terms of interpreting the output:
-![Summary output](../../images/lm_summary.png)  
+ 
 
 ## Reporting   
 Depends on what type your data is and whether it was scaled 
