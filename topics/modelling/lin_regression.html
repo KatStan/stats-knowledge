@@ -223,8 +223,11 @@ window.Quarto = {
 <ul>
 <li>Do three diagnostics seen in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">When CAN I?</a></li>
 <li>Check manual and adjusted <span class="math inline">\(R^2&gt;&gt;0\)</span></li>
+<li>The residuals summary has a median close to zero (in units of response var)</li>
 <li>Check residual standard error is small for the units and mean of your response variable</li>
-<li>Continue looking at traits by following in <a href="#" onclick="goToTab('tabset-1-5-tab'); return false;">How to interpret?</a></li>
+<li>Continue looking at traits by following <a href="#" onclick="goToTab('tabset-1-5-tab'); return false;">How to interpret?</a><br>
+</li>
+<li>When you’re happy with the selected traits, report, use the guide example in <a href="#" onclick="goToTab('tabset-1-6-tab'); return false;">Reporting</a></li>
 </ul>
 <p>The regression of <span class="math inline">\(Y\)</span> on <span class="math inline">\(x\)</span> is the conditional mean <span class="math inline">\(E(Y|x) = m(x)\)</span>, where <span class="math inline">\(m(x)\)</span> can take any form, but in a linear regression, it takes this form: <span class="math display">\[\begin{gather} E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x) \text{ and } \\ var(Y|x) = \sigma^2 \end{gather}\]</span> where <span class="math inline">\(\beta_j\)</span> are the coefficients. Performing a regression means estimating <span class="math inline">\(\beta_j, ~ j = 0,..,k\)</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -339,7 +342,10 @@ Note
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <section id="how-to-assess-if-my-lin-model-is-likely-a-lin-model" class="level3">
 <h3 class="anchored" data-anchor-id="how-to-assess-if-my-lin-model-is-likely-a-lin-model">How to assess if my lin model is likely a lin model?</h3>
-<p>Apart from doing everything in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">When CAN I?</a>, especially 1), there is also <span class="math inline">\(R^2\)</span> which is the coefficient of determination, measures the strength of the linear relationship between the traits and outcome and is between 0 and 1 i.e.&nbsp;the proportion of varY that is explained by your estimated m(x); an <span class="math inline">\(R^2&gt;&gt;0\)</span> indicates a closer fit of the model to the data, and the adjusted <span class="math inline">\(R^2\)</span> takes into account irrelevant predictors</p>
+<p>Apart from doing everything in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">When CAN I?</a>, especially 1), there is also: - The residuals summary should have a median around 0 in your reponses’s units, otherwise it might indicate your model is misspecified (should be confirmed with Q-Q plot) - <span class="math inline">\(R^2\)</span>, which is the coefficient of determination, measures the strength of the linear relationship between the traits and outcome and is between 0 and 1 i.e.&nbsp;the proportion of varY that is explained by your estimated m(x); an <span class="math inline">\(R^2&gt;&gt;0\)</span> indicates a closer fit of the model to the data, and the adjusted <span class="math inline">\(R^2\)</span> takes into account irrelevant predictors.<br>
+- The Residual standard error should be small, close to 0 in your response’s units<br>
+- Overall p-value of the F-statistic test should tell you it’s a better model than no model</p>
+<p>The output: <img src="../../images/lm_summary.png" class="img-fluid" alt="Summary output"></p>
 </section>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
@@ -380,7 +386,6 @@ F-statistic: 21.68 on 8 and 88 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>If some coefficients are not so different from 0, you might want to consider a simpler model without these traits included, and test whether the two nested models are the same, and then proceed with the simpler one (o/w if they are significantly different, proceed with the more complex model) - see Anova in testing TBA</p>
 <p>Whether the intercept is significantly different from 0 or not matters for whatever your model represents i.e.&nbsp;the state of the outcome when all of your traits are 0 -&gt; I would use this as a reality check</p>
-<p>In terms of interpreting the output: <img src="../../images/lm_summary.png" class="img-fluid" alt="Summary output"></p>
 </section>
 </div>
 <div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
