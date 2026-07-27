@@ -173,3 +173,13 @@ f_{c*v_1}(x) = c*\beta_0 + \sum_{i=1}^k (c*\beta_i)g_{i}(x) = c*\beta_0 + c*\sum
 $$
 
 :::
+
+## References
+::: {style="font-size: 50%;"}
+1. My uni notes from [Statistics (MAST20005)](https://handbook.unimelb.edu.au/2023/subjects/mast20005) and [Statistics for Bioinformatics (BINF90001)](https://handbook.unimelb.edu.au/2024/subjects/binf90001)
+2. Roustaei N. Application and interpretation of linear-regression analysis. Med Hypothesis Discov Innov Ophthalmol. 2024 Oct 14;13(3):151-159. doi: 10.51329/mehdiophthal1506. PMID: 39507810; PMCID: PMC11537238. [https://pmc.ncbi.nlm.nih.gov/articles/PMC11537238/](https://pmc.ncbi.nlm.nih.gov/articles/PMC11537238/)
+3. [https://numiqo.com/tutorial/linear-regression](https://numiqo.com/tutorial/linear-regression)
+4. [https://www.statology.org/interpret-regression-output-in-r/](https://www.statology.org/interpret-regression-output-in-r/)
+5. [https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R)
+6. [https://r-statistics.co/Interpreting-Regression-Output-Completely.html](https://r-statistics.co/Interpreting-Regression-Output-Completely.html)
+:::
