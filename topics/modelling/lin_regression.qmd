@@ -6,7 +6,7 @@ format: html
 ## TL;DR
 -  Do three diagnostics seen in <a href="#" onclick="goToTab('tabset-1-3-tab'); return false;">When CAN I?</a>
 -  Check manual and adjusted $R^2>>0$
--  The residuals summary has a median close to zero (in units of response var) 
+-  Check the residuals summary has a median close to zero (in units of response var) 
 -  Check residual standard error is small for the units and mean of your response variable 
 -  Continue looking at traits by following <a href="#" onclick="goToTab('tabset-1-5-tab'); return false;">How to interpret?</a>   
 -  When you're happy with the selected traits, report, use the guide example in <a href="#" onclick="goToTab('tabset-1-6-tab'); return false;">Reporting</a>   
@@ -28,7 +28,7 @@ and vice versa
 -  Linear actually means linear in the coefficients, i.e. not necessarily a straight
 line but a linear combination (i.e an additive function) of complex and non-linear
 functions of x, with the coefficients 'out the front'  
--  Additive function f is such that this holds $$ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) $$ where $$ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)$$ i.e. the coefficients of $f(x)$. See the maths behind <a href="#" onclick="goToTab('tabset-1-9-tab'); return false;">Maths</a> for proof this holds for $E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)$
+-  Additive function f is such that this holds $$ f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and} \\ f_{c*v_1}(x) = c*f_{v_1}(x) $$ where $$ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k)$$ i.e. the coefficients of $f(x)$. See <a href="#" onclick="goToTab('tabset-1-9-tab'); return false;">Maths</a> for proof this holds for $E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x)$
 
 
 ## When?
