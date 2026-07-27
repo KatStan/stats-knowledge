@@ -412,8 +412,9 @@ F-statistic: 21.68 on 8 and 88 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="if-you-want-the-maths-behind-it" class="level3">
 <h3 class="anchored" data-anchor-id="if-you-want-the-maths-behind-it">If you want the maths behind it</h3>
 <p>How is <span class="math inline">\(m(x)\)</span> an additive function? We know <span class="math inline">\(m(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)\)</span>. Let’s define <span class="math inline">\(f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x),\text{ where } v_1 = (\beta_0, \beta_1, ..., \beta_k)\)</span>; we need <span class="math inline">\(f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and } \\ f_{c*v_1}(x) = c*f_{v_1}(x)\)</span> to hold true.</p>
-<p>Proof: <span class="math display">\[
-{\small
+<p>Proof:</p>
+<p><span class="math display">\[
+\small
 \begin{gather}
 f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x), ~ f_{v_2}(x) = \alpha_0 + \sum_{i=1}^k \alpha_ig_{i}(x) \text{  and } \\ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k) \implies \\
 v1+v2 = (\beta_0 + \alpha_0, \beta_1 + \alpha_1, ..., \beta_k + \alpha_k) \implies \\
@@ -421,7 +422,6 @@ f_{v_1+v_2}(x) = (\beta_0 + \alpha_0) + \sum_{i=1}^k (\beta_i+\alpha_i)g_{i}(x) 
 c*v1 = (c*\beta_0, c*\beta_1, ..., c*\beta_k) \implies \\
 f_{c*v_1}(x) = c*\beta_0 + \sum_{i=1}^k (c*\beta_i)g_{i}(x) = c*\beta_0 + c*\sum_{i=1}^k \beta_ig_{i}(x) = c(\beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)) = c*f_{v_1}(x) ~ \square
 \end{gather}
-}
 \]</span></p>
 </section>
 </div>
