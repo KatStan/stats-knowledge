@@ -135,7 +135,6 @@ Whether the intercept is significantly different from 0 or not matters for whate
 your model represents i.e. the state of the outcome when all of your traits are
 0 -> I would use this as a reality check
 
- 
 
 ## Reporting   
 Depends on what type your data is and whether it was scaled 
@@ -159,8 +158,9 @@ $Y_i$
 How is $m(x)$ an additive function? We know $m(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)$. Let's define $f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x),\text{ where } v_1 = (\beta_0, \beta_1, ..., \beta_k)$; we need $f_{v_1+v_2}(x) = f_{v_1}(x) + f_{v_2}(x), \text{ and } \\ f_{c*v_1}(x) = c*f_{v_1}(x)$ to hold true. 
 
 Proof: 
+
 $$
-{\small
+\small
 \begin{gather}
 f_{v_1}(x) = \beta_0 + \sum_{i=1}^k \beta_ig_{i}(x), ~ f_{v_2}(x) = \alpha_0 + \sum_{i=1}^k \alpha_ig_{i}(x) \text{  and } \\ v_1 = (\beta_0, \beta_1, ..., \beta_k), ~ v_2 = (\alpha_0, \alpha_1, ..., \alpha_k) \implies \\ 
 v1+v2 = (\beta_0 + \alpha_0, \beta_1 + \alpha_1, ..., \beta_k + \alpha_k) \implies \\
@@ -168,8 +168,8 @@ f_{v_1+v_2}(x) = (\beta_0 + \alpha_0) + \sum_{i=1}^k (\beta_i+\alpha_i)g_{i}(x) 
 c*v1 = (c*\beta_0, c*\beta_1, ..., c*\beta_k) \implies \\
 f_{c*v_1}(x) = c*\beta_0 + \sum_{i=1}^k (c*\beta_i)g_{i}(x) = c*\beta_0 + c*\sum_{i=1}^k \beta_ig_{i}(x) = c(\beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)) = c*f_{v_1}(x) ~ \square
 \end{gather}
-}
 $$
+
 
 
 
