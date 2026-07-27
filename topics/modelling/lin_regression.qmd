@@ -15,6 +15,8 @@ The regression of $Y$ on $x$ is the conditional mean $E(Y|x) = m(x)$, where $m(x
 but in a linear regression, it takes this form: $$\begin{gather} E(Y|x) = m(x) = \beta_0 + \sum_{j=1}^k \beta_jg_{j}(x) \text{ and } \\ var(Y|x) = \sigma^2 \end{gather}$$ where $\beta_j$ are the coefficients.
 Performing a regression means estimating $\beta_j, ~ j = 0,..,k$. 
 
+## Guide
+
 ::: {.panel-tabset}
 
 ## Common phrases 
@@ -169,8 +171,5 @@ c*v1 = (c*\beta_0, c*\beta_1, ..., c*\beta_k) \implies \\
 f_{c*v_1}(x) = c*\beta_0 + \sum_{i=1}^k (c*\beta_i)g_{i}(x) = c*\beta_0 + c*\sum_{i=1}^k \beta_ig_{i}(x) = c(\beta_0 + \sum_{i=1}^k \beta_ig_{i}(x)) = c*f_{v_1}(x) ~ \square
 \end{gather}
 $$
-
-
-
 
 :::
