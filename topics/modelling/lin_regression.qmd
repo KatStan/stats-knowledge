@@ -1,5 +1,5 @@
 ---
-title: "(Multivariable) linear regression"
+title: "(Multiple/Multivariable) linear regression"
 format: html
 ---
 
@@ -182,4 +182,5 @@ $$
 4. [https://www.statology.org/interpret-regression-output-in-r/](https://www.statology.org/interpret-regression-output-in-r/)
 5. [https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R)
 6. [https://r-statistics.co/Interpreting-Regression-Output-Completely.html](https://r-statistics.co/Interpreting-Regression-Output-Completely.html)
+7. Hidalgo B, Goodman M. Multivariate or multivariable regression? Am J Public Health. 2013 Jan;103(1):39-40. doi: 10.2105/AJPH.2012.300897. Epub 2012 Nov 15. PMID: 23153131; PMCID: PMC3518362. [https://pmc.ncbi.nlm.nih.gov/articles/PMC3518362/](https://pmc.ncbi.nlm.nih.gov/articles/PMC3518362/)
 :::
