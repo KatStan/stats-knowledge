@@ -104,7 +104,8 @@ If you care about interpretation of the predictors in this model, you need to ch
 whether there is multicollinearity between the predictors. If any of the predictor's
 variance inflation factor is over 10, the more likely multicollinearity is present 
 and that predictor(s) should be dropped -> that decision should be based on more
-investigation, like pairwise correlation and domain knowledge
+investigation, like pairwise correlation, domain knowledge and/or with a usage of
+Lasso or Ridge regression.
 
 ```{r}
 #| label: lm_multicollinearity
