@@ -17,7 +17,7 @@ and are happy with it.
 
 ## Continuous, no scaling
 
-```{r, eval = false}
+```{r, eval = FALSE}
 #| label: all_cont_no_scaling
 summary(lm(mpg ~ wt + hp, data = mtcars))
 ```
