@@ -157,7 +157,9 @@ your model represents i.e. the state of the outcome when all of your traits are
 
 
 ## Reporting   
-Depends on what type your data is and whether it was scaled 
+
+{{< include /topics/modelling/_reporting_lin_regression.qmd >}}
+ 
 
 ## R caveats/defaults 
 ### R caveats/defaults I need to know about?
