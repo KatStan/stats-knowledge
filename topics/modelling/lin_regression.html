@@ -418,8 +418,8 @@ All examples here assume you have been through the assessment of your linear mod
 <p><img src="../../images/lm_cont_reporting.png" class="img-fluid" alt="Summary output"> - increasing the weight by 1000 lbs would result in a drop of 3.8773 miles/gallon i.e.&nbsp;one unit change of weight results in a drop of 3.8773 miles/gallon - an increase in 1 horsepower (gross) would result in a drop of 0.03177 miles/gallon i.e.&nbsp;an increase in 100 horsepower (gross) would result in a drop of 3.177 miles/gallon - the typical prediction would be off by ~2.6 miles/gallon - the model explains ~81.48% of the variation of miles/gallon, i.e.&nbsp;the adjusted <span class="math inline">\(R^2\)</span> = 0.8148</p>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<section id="binary" class="level3">
-<h3 class="anchored" data-anchor-id="binary">Binary</h3>
+<section id="binary" class="level4">
+<h4 class="anchored" data-anchor-id="binary">Binary</h4>
 <p>It’s common to have some sort of binary in your predictors, like sex. If it is encoded as 0 and 1, R handles it regardless whether it is a factor or numerical, and the interpretation of its coefficient holds the same in both cases, just different naming, so it is instantly clear which level represented by the coefficient. The underlying equation is <span class="math inline">\(mpg = \beta_0 +  \beta_1*wt + \beta_2*hp + \beta_3*I(vs == 1)\)</span>, where <span class="math inline">\(I()\)</span> is an indicator function, returning 1 when the expression is true, so the reference is the ‘0’ group. In this case vs = 0 means engine is v-shaped, whilst vs = 1 means straight, as long as the levels match the labeled values!</p>
 <p><strong>Note:</strong> This also holds when it is any 2 integer values that <em>differ by 1</em>, factor or not (e.g.&nbsp;1,2 or 4,5). If they do not differ by 1, it <strong>has</strong> to be a factor to be treated as a categorical binary (i.e.&nbsp;representing two categories)</p>
 <div class="cell">
@@ -475,8 +475,8 @@ F-statistic: 46.52 on 3 and 28 DF,  p-value: 5.276e-11</code></pre>
 </div>
 <p>(Imagine vs is also significant and it makes sense for it to be in the model): - increasing the weight by 1000 lbs would result in a drop of 3.78003 miles/gallon i.e.&nbsp;one unit change of weight results in a drop of 3.78003 miles/gallon - an increase in 1 horsepower (gross) would result in a drop of 0.02542 miles/gallon i.e.&nbsp;an increase in 100 horsepower (gross) would result in a drop of 2.542 miles/gallon - a straight engine (group 1) has a higher mpg by 1.36771 than v-shaped engines - the typical prediction would be off by ~2.6 miles/gallon - the model explains ~81.5% of the variation of miles/gallon, i.e.&nbsp;the adjusted <span class="math inline">\(R^2\)</span> = 0.815</p>
 </section>
-<section id="categorical" class="level3">
-<h3 class="anchored" data-anchor-id="categorical">Categorical</h3>
+<section id="categorical" class="level4">
+<h4 class="anchored" data-anchor-id="categorical">Categorical</h4>
 <p>Let’s say a variable has more than 2 levels, e.g.&nbsp;in this dataset, cars can have 4,6, or 8 cylinders. Let’s call each a category (you can make categories by binning the values you have e.g.). This adds k-1 dummy variables to the model, where k is the amount of categories, making the model: <span class="math inline">\(mpg = \beta_0 + \beta_1*wt + \beta_2*hp + \beta_3*I(cyl\_f == 6) + \beta_4*I(cyl\_f == 8)\)</span>,</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mtcars_f <span class="ot">&lt;-</span> mtcars <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">cyl_f =</span> <span class="fu">as.factor</span>(cyl))</span>
@@ -618,27 +618,27 @@ F-statistic: 30.76 on 3 and 599 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ul>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
-<section id="only-dependent-variable-is-log-transformed" class="level3">
-<h3 class="anchored" data-anchor-id="only-dependent-variable-is-log-transformed">Only dependent variable is log-transformed</h3>
+<section id="only-dependent-variable-is-log-transformed" class="level4">
+<h4 class="anchored" data-anchor-id="only-dependent-variable-is-log-transformed">Only dependent variable is log-transformed</h4>
 <p><span class="math display">\[E(V|x) = E(log(Y)|x) = \beta_0 + \sum_{j=1}^k\beta_jg_{j}(x)\]</span> For one unit change of trait j, it will result in one unit change of V, however you are usually interested in the change in Y, as that is your measured trait.<br>
 One unit change of trait j results in $ (e^{_j} - 1)*100% $ percent difference (in <strong>geometric mean</strong>) of Y. See math proof below for more information.</p>
 </section>
-<section id="some-independent-variables-are-log-transformed" class="level3">
-<h3 class="anchored" data-anchor-id="some-independent-variables-are-log-transformed">Some independent variables are log-transformed</h3>
+<section id="some-independent-variables-are-log-transformed" class="level4">
+<h4 class="anchored" data-anchor-id="some-independent-variables-are-log-transformed">Some independent variables are log-transformed</h4>
 <p>E.g. <span class="math inline">\(Y=β_0+β_1x_1+β_2log(x_2)+β_3log(x_3)+ϵ\)</span></p>
 <p>Let’s say we have <span class="math inline">\(x_3\)</span> be <span class="math inline">\(r_1\)</span>, and it changes to <span class="math inline">\(r_2\)</span>:</p>
 <p>The effects of the log transformed traits are still linear, so <span class="math inline">\(E(Y|r_2) -  E(Y|r_1) = \beta_3 \times [ \log(r_2) – \log(r_1) ] = \beta_3 \times [\log(r_2 / r_1)]\)</span>;<br>
 Reporting this would be e.g.&nbsp;a 1% increase in x_3 leads to <span class="math inline">\(log1.01 \times \beta_3\)</span> unit increase in <span class="math inline">\(Y \rightarrow\)</span> which can be approximated (because it’s a small change) by <span class="math inline">\(0.01*\beta_3 \text{ or } \frac{\beta_3}{100}\)</span></p>
 </section>
-<section id="dependent-and-some-independent-are-log-transformed" class="level3">
-<h3 class="anchored" data-anchor-id="dependent-and-some-independent-are-log-transformed">Dependent and some independent are log-transformed</h3>
+<section id="dependent-and-some-independent-are-log-transformed" class="level4">
+<h4 class="anchored" data-anchor-id="dependent-and-some-independent-are-log-transformed">Dependent and some independent are log-transformed</h4>
 <p>The situation we haven’t covered yet is reporting an increase in a log-transformed independent for a log-trans dependent.</p>
 <p><span class="math display">\[ E(log(Y)|r_2) -  E(log(Y)|r_1) = \beta_3 \times [ \log(r_2) – \log(r_1) ] = \beta_3 \times [\log(r_2 / r_1)] \iff \\
 \frac{e^{E(log(Y)|\mathbf{x_j})}}{e^{E(log(Y)|\mathbf{x})}} = e^{log((\frac{r_2}{r_1})^{\beta_3})}  \iff \frac{GeomMean(Y|\mathbf{x_j})}{GeomMean(Y|\mathbf{x})}= (\frac{r_2}{r_1})^{\beta_3}
 \]</span> So for a 1% increase in x_3 leads to <span class="math inline">\((1.01^{\beta_3}-1)*100\%\)</span> percent change in <span class="math inline">\(Y \rightarrow\)</span> which can be approximated (because it’s a small change) by <span class="math inline">\(0.01*\beta_3 * 100 \% = \beta_3 \%\)</span></p>
 </section>
-<section id="math-proof" class="level3">
-<h3 class="anchored" data-anchor-id="math-proof">Math proof:</h3>
+<section id="math-proof" class="level4">
+<h4 class="anchored" data-anchor-id="math-proof">Math proof:</h4>
 <p>You want a function of Y, not of logY:<br>
 <span class="math display">\[ \mathbf{x} - realisation~of~predictors \\
 \mathbf{x_j} - realisation~of~predictors~ like~ \mathbf{x}~ where~ only~ x_j~ is~ increased~ by~ 1~ unit \\ E(log(Y)|\mathbf{x_j}) -  E(log(Y)|\mathbf{x}) = \beta_j \iff e^{E(log(Y)|\mathbf{x_j}) -  E(log(Y)|\mathbf{x})} = e^{\beta_j} \iff \frac{e^{E(log(Y)|\mathbf{x_j})}}{e^{E(log(Y)|\mathbf{x})}} = e^{\beta_j}  \iff \frac{GeomMean(Y|\mathbf{x_j})}{GeomMean(Y|\mathbf{x})}= e^{\beta_j} \]</span> Taking the exponent of the average log is the definition of a geometric mean: <span class="math display">\[ e^{E(logY|x)} = e^{\frac{1}{n}(log(y_1) + .. +log(y_n))} = e^{\frac{1}{n}(log(y_1*..*y_n))} = e^{log((y_1*..*y_n)^\frac{1}{n})} = (y_1*..*y_n)^\frac{1}{n} \rightarrow geometric~mean\]</span></p>
