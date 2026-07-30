@@ -22,10 +22,12 @@ and are happy with it.
 suppressMessages(library(tidyverse))
 ```
 
+
 ```{r, eval = FALSE}
 #| label: all_cont_no_scaling
 summary(lm(mpg ~ wt + hp, data = mtcars))
 ```
+
 ![Summary output](../../images/lm_cont_reporting.png)
 -  increasing the weight by 1000 lbs would result in a drop of 3.8773 miles/gallon i.e. one unit change of weight results in a drop of 3.8773 miles/gallon
 -  an increase in 1 horsepower (gross) would result in a drop of 0.03177 miles/gallon i.e. an increase in 100 horsepower (gross) would result in a drop of 3.177 miles/gallon 
