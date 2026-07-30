@@ -63,7 +63,10 @@ For each assumption you do:
 $Y_i$ and by the value $m(x_i)$ you have come to i.e. the value on your estimated line), 
 you are hoping to see points scattered randomly along the diagonal line of y = x  
 2) Plot **residuals** vs fitted values (each data point is described by the residual - observed 
-$Y_i$ minus $m(x_i)$ - and $m(x_i)$), you are hoping to see an equal amount of points above and below 0 at similar distances from 0  
+$Y_i$ minus $m(x_i)$ - and $m(x_i)$), you are hoping to see an equal amount of points above and below 0 at similar distances from 0 and spread across the x axis (if that is not the case, plotting 
+residuals vs. a specific independent variable tells you which specific variable 
+needs to be "fixed" e.g., if you see a curve here, you need to add a squared term
+of this specific variable)
 3) plot a normal QQ plot of the residuals to check whether the distribution of residuals
 is $\sim N(0, \sigma^2)$ - you're hoping to see all the points on the diagonal   
 
