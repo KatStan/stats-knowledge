@@ -199,7 +199,9 @@ $$
 3. [https://r-statistics.co/Interpreting-Regression-Output-Completely.html](https://r-statistics.co/Interpreting-Regression-Output-Completely.html) 
 4. [https://numiqo.com/tutorial/linear-regression](https://numiqo.com/tutorial/linear-regression)
 5. [https://library.virginia.edu/data/articles/addressing-multicollinearity](https://library.virginia.edu/data/articles/addressing-multicollinearity)
-6. [https://www.statology.org/interpret-regression-output-in-r/](https://www.statology.org/interpret-regression-output-in-r/)
-7. [https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R)
-8. Hidalgo B, Goodman M. Multivariate or multivariable regression? Am J Public Health. 2013 Jan;103(1):39-40. doi: 10.2105/AJPH.2012.300897. Epub 2012 Nov 15. PMID: 23153131; PMCID: PMC3518362. [https://pmc.ncbi.nlm.nih.gov/articles/PMC3518362/](https://pmc.ncbi.nlm.nih.gov/articles/PMC3518362/)
+6. Jones L, Barnett A, Vagenas D. Linear regression reporting practices for health researchers, a cross-sectional meta-research study. PLoS One. 2025 Mar 20;20(3):e0305150. doi: 10.1371/journal.pone.0305150. PMID: 40111967; PMCID: PMC11925299. [https://pmc.ncbi.nlm.nih.gov/articles/PMC11925299/](https://pmc.ncbi.nlm.nih.gov/articles/PMC11925299/)
+7. Jones L, Barnett A, Vagenas D. Common misconceptions held by health researchers when interpreting linear regression assumptions, a cross-sectional study. PLoS One. 2025 Jun 5;20(6):e0299617. doi: 10.1371/journal.pone.0299617. PMID: 40471888; PMCID: PMC12140278. [https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0299617](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0299617)
+8. [https://www.statology.org/interpret-regression-output-in-r/](https://www.statology.org/interpret-regression-output-in-r/)
+9. [https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R](https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R)
+10. Hidalgo B, Goodman M. Multivariate or multivariable regression? Am J Public Health. 2013 Jan;103(1):39-40. doi: 10.2105/AJPH.2012.300897. Epub 2012 Nov 15. PMID: 23153131; PMCID: PMC3518362. [https://pmc.ncbi.nlm.nih.gov/articles/PMC3518362/](https://pmc.ncbi.nlm.nih.gov/articles/PMC3518362/)
 :::
