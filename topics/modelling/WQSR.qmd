@@ -1,0 +1,78 @@
+---
+title: "Weighted Quantile Sum Rregression (WQSR) DRAFT"
+format: html
+---
+
+## What question does this answer?
+Trying to estimate an overall mixture effect of multiple things on an outcome,
+whilst also benefiting from seeing which things impact the outcome the most.  
+Commonly used in environmental (chemical) mixture risk evaluation, since more
+common shrinkage methods used for prediction like (adaptive) lasso, elastic net 
+and ridge regression handle correlated elements without necessarily taking into 
+account association with the outcome but e.g. due to exposure and/or behavior patterns.  
+
+
+## When can I use it?
+- Assumption #1: the relationship between the overall mixture effect (wqs) and outcome is linear
+- Assumption #2: there are no interactions between the mixture elements in their effect on the outcome (it's just additive)
+
+## How do I use it?
+- need to enforce at the beginning that all variables are either all positive or all negative relative to the outcome (e.g. you believe MEP is harmful for cognition, but that the rest of the mixture is protective of cognition, where more "cognition" means better cognition, so you would want to invert(- them) MEP values, since you believe smaller values of MEP are good for cognition i.e in the same direction as "cognition")
+- need to enforce at the beginning if one variable is binary in the mixture, then all of them need to be binary
+- in practice, have less than a smaller doubledigit number of mixture elements
+- do you have an overall mixture effect? Look at the Beta coeff sample mean and test against =0. Beta can be <0, meaning the effect decreases the outcome  
+- the elements whose weights are larger than 1/(#mixture elements) indicate a 
+larger contribution to the outcome than expected by chance
+
+## Code usage examples
+need to play around with b1_pos and b1_constr, as well as the output
+
+## What is it?
+
+Trying to estimate an overall mixture effect of multiple things.  
+a weighted index aka weighted adding of the components; the weights are determined within the procedure  
+some things will be weighted higher than others and they are contributing more to the mixture effect than others with low weights 
+
+WQSR overview:
+- repeatedly splits the dataset into training and test (100x) and you control
+the split 40-60 train-test (yes, train is smaller)   
+- in each of these 100x repeated train-test scenarios you:
+  - get mixture weights for each variable
+  - use mixture weights in holdout set to get a wqs for every row (observation/person)
+  - test association (acquire a beta coeff) between wqs variable and outcome variable in holdout
+(because you don't want to use the same data for testing this association as the 
+data you used to get the weights for wqs in the first place, because then you are overfitting) 
+
+- You have done this 100 times, now you end up with a distribution of Beta coeff that
+represent the relationship between the mixture variable and the outcome in the test sets,
+then you take the mean of all those betas and that is the estimate of the association 
+
+- You also have made the weights for each variable 100x, so you have a distribution of
+those, and you also take the mean for each weight -> that mean is compared to tau
+tau is 1/number of elements in mixture so basically represents the expected weight
+if every element contributed equally to the mixture
+variables that are important are the ones whose mean weight are above the
+tau threshold -> not a significance test!
+
+Do you have an overall mixture effect? Look at the Beta coeff distribution, acquire
+the sample mean (the one you would report, mentioned above), this has a normal distribution based on the central limit theorem (n=100>=30), test whether the normal distributions mean parameter (aka the sample mean value)
+is different from 0 by conducting a t-test (because you don't know the distribution
+sd, but will use the standard error)
+Beta can be <0, meaning the effect decreases the outcome
+
+Characteriscs of weights: The sum of all component weights (\(w_{j}\)) should equal 1 (\(\sum w_j = 1\)) within
+each train dataset. However, the final weights we have are estimates of a distribution,
+so it will be close to one, if not exact.
+Bounded values: Each individual weight must be between 0 and 1 (\(0 \le w_j \le 1\)).
+
+
+## References: 
+::: {.refs-small-text}
+1. Sarah Thomson, Katherine Drummond, Martin O’Hely, Thomas Boissiere-O’Neill, Christos Symeonides, David Burgner, Toby Mansell, Richard Saffery, Peter J. Vuillermin, Peter D. Sly, Anne-Louise Ponsonby,
+Prenatal phthalate mixture exposure increases early childhood internalising problems via maternal oxidative stress,
+Environment International, Volume 212, 2026, 110237, ISSN 0160-4120, https://doi.org/10.1016/j.envint.2026.110237
+2. Eva M. Tanner, Carl-Gustaf Bornehag, Chris Gennings, Repeated holdout validation for weighted quantile sum regression,
+MethodsX, Volume 6, 2019, Pages 2855-2860, ISSN 2215-0161, https://doi.org/10.1016/j.mex.2019.11.008.
+3. https://github.com/evamtanner/Repeated_Holdout_WQS
+4. [https://pmc.ncbi.nlm.nih.gov/articles/PMC6261506/pdf/nihms-993354.pdf](https://pmc.ncbi.nlm.nih.gov/articles/PMC6261506/pdf/nihms-993354.pdf)
+:::
