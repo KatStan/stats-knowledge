@@ -2,22 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://KatStan.github.io/stats-knowledge/index.html</loc>
-    <lastmod>2026-07-31T15:31:17.072Z</lastmod>
+    <lastmod>2026-08-04T20:20:49.653Z</lastmod>
   </url>
   <url>
     <loc>https://KatStan.github.io/stats-knowledge/topics/visualisations/boxplots.html</loc>
-    <lastmod>2026-07-31T15:31:17.074Z</lastmod>
-  </url>
-  <url>
-    <loc>https://KatStan.github.io/stats-knowledge/about.html</loc>
-    <lastmod>2026-07-31T15:31:17.062Z</lastmod>
+    <lastmod>2026-08-04T20:20:49.656Z</lastmod>
   </url>
   <url>
     <loc>https://KatStan.github.io/stats-knowledge/topics/modelling/lin_regression.html</loc>
-    <lastmod>2026-07-31T15:31:17.074Z</lastmod>
+    <lastmod>2026-08-04T20:20:49.655Z</lastmod>
+  </url>
+  <url>
+    <loc>https://KatStan.github.io/stats-knowledge/about.html</loc>
+    <lastmod>2026-08-04T20:20:49.641Z</lastmod>
+  </url>
+  <url>
+    <loc>https://KatStan.github.io/stats-knowledge/topics/modelling/WQSR.html</loc>
+    <lastmod>2026-08-04T20:20:49.655Z</lastmod>
   </url>
   <url>
     <loc>https://KatStan.github.io/stats-knowledge/topics/others_tba/topic1.html</loc>
-    <lastmod>2026-07-31T15:31:17.074Z</lastmod>
+    <lastmod>2026-08-04T20:20:49.656Z</lastmod>
   </url>
 </urlset>
