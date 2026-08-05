@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -190,7 +225,7 @@ window.Quarto = {
 
 <section id="what-question-does-this-answer" class="level2">
 <h2 class="anchored" data-anchor-id="what-question-does-this-answer">What question does this answer?</h2>
-<p>Trying to estimate an overall mixture effect of multiple things on an outcome, whilst also benefiting from seeing which things impact the outcome the most.<br>
+<p>Is there an overall mixture effect on my (health) outcome? Which components in the mixture are driving the outcome? We’re trying to estimate an overall mixture effect of multiple elements on an outcome, whilst also benefiting from seeing which elements impact the outcome the most.<br>
 Commonly used in environmental (chemical) mixture risk evaluation, since more common shrinkage methods used for prediction like (adaptive) lasso, elastic net and ridge regression handle correlated elements without necessarily taking into account association with the outcome but e.g.&nbsp;due to exposure and/or behavior patterns.</p>
 </section>
 <section id="when-can-i-use-it" class="level2">
@@ -213,13 +248,126 @@ Commonly used in environmental (chemical) mixture risk evaluation, since more co
 </section>
 <section id="code-usage-examples" class="level2">
 <h2 class="anchored" data-anchor-id="code-usage-examples">Code usage examples</h2>
-<p>need to play around with b1_pos and b1_constr, as well as the output</p>
+<p>Since you need to code all your variables to be the same direction with the outcome (whatever the direction is), you probably have some idea as to what that direction is. If you don’t though, you can start by exploring both indices, one in the positive direction (<code>pwqs</code>) and one in the negative (<code>nwqs</code>). This way, you can see which remains significant (look at whether the CIs aren’t capturing 0)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gWQS)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Welcome to Weighted Quantile Sum (WQS) Regression.
+If you are using a Mac you have to install XQuartz.
+You can download it from: https://www.xquartz.org/</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we save the names of the mixture variables in the variable "PCBs"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>PCBs <span class="ot">&lt;-</span> <span class="fu">names</span>(wqs_data)[<span class="dv">1</span><span class="sc">:</span><span class="dv">34</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># we run the model </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>results2i <span class="ot">&lt;-</span> <span class="fu">gwqs</span>(yLBX <span class="sc">~</span> pwqs <span class="sc">+</span> nwqs <span class="sc">+</span> sex, <span class="co"># these p/n wqs do not exist in the data; should list covariates if any</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">mix_name =</span> PCBs, <span class="co"># vector of column names of all mixture elements</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> wqs_data, <span class="co"># data that holds all mixture elements + outcome</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">q =</span> <span class="dv">10</span>, <span class="co"># mixture elements are ranked by converting elements into deciles (-&gt;raw unit/scale don't matter)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">validation =</span> <span class="fl">0.6</span>, <span class="co"># splitting into 40:60% train:test</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">b =</span> <span class="dv">5</span>, <span class="co"># having b bootstrap samples for estimating parameters; in practice ~100</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">b1_pos =</span> <span class="cn">TRUE</span>, <span class="co"># determines whether the weights are pointing in the same direction as outcome</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">rh =</span> <span class="dv">5</span>, <span class="co"># number of repeat holdouts; in practice ~100</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="st">"gaussian"</span>, <span class="co"># continuous outcome</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">seed =</span> <span class="dv">2016</span>) <span class="co"># reproducibility</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(results2i)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+gwqs(formula = yLBX ~ pwqs + nwqs + sex, data = wqs_data, mix_name = PCBs, 
+    rh = 5, b = 5, b1_pos = TRUE, q = 10, validation = 0.6, family = "gaussian", 
+    seed = 2016)
+
+
+Coefficients:
+            Estimate Std. Error    2.5 % 97.5 %
+(Intercept) -4.83488    0.27138 -5.36679 -4.303
+pwqs         1.17306    0.08759  1.00139  1.345
+nwqs        -0.09669    0.10174 -0.29611  0.103
+sexF         0.16546    0.06083  0.04624  0.285
+
+(Mean dispersion parameter for gaussian family taken to be 1.199698)
+
+    Mean null deviance: 633.40  on 301  degrees of freedom
+Mean residual deviance: 352.93  on 298  degrees of freedom
+
+Mean AIC:  905.08 </code></pre>
+</div>
+</div>
+<p>Based on the output, we see <code>pwqs</code> has 95% CI (0.99503 - 1.358), whilst <code>nwqs</code> contains 0. Let’s then run the model as a unidirectional model</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we run the model </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> gWQS<span class="sc">::</span><span class="fu">gwqs</span>(yLBX <span class="sc">~</span> wqs <span class="sc">+</span> sex, <span class="co"># these p/n wqs do not exist in the data; should list covariates if any</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">mix_name =</span> PCBs, <span class="co"># vector of column names of all mixture elements</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> wqs_data, <span class="co"># data that holds all mixture elements + outcome</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">q =</span> <span class="dv">10</span>, <span class="co"># mixture elements are ranked by converting elements into deciles (-&gt;raw unit/scale don't matter)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">validation =</span> <span class="fl">0.6</span>, <span class="co"># splitting into 40:60% train:test</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">b =</span> <span class="dv">5</span>, <span class="co"># having b bootstrap samples for estimating parameters; in practice ~100</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">b1_pos =</span> <span class="cn">TRUE</span>, <span class="co"># this would've been FALSE is nwqs turned out significant</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">rh =</span> <span class="dv">5</span>, <span class="co"># number of repeat holdouts; in practice ~100</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="st">"gaussian"</span>, <span class="co"># continuous outcome</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">seed =</span> <span class="dv">2016</span>) <span class="co"># reproducibility</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># MODEL DIAGNOSTICS:</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># scatter plot y vs wqs for checking linearity assumption</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">gwqs_scatterplot</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+ℹ Please use tidy evaluation idioms with `aes()`.
+ℹ See also `vignette("ggplot2-in-packages")` for more information.
+ℹ The deprecated feature was likely used in the gWQS package.
+  Please report the issue to the authors.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.
+ℹ The deprecated feature was likely used in the gWQS package.
+  Please report the issue to the authors.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="WQSR_files/figure-html/gwqs_pwqs-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scatter plot residuals vs fitted values for checking normality assumption</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gwqs_fitted_vs_resid</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="WQSR_files/figure-html/gwqs_pwqs-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MODEL RESULTS:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># bar plot of sorted weights and their relevance(tau line) </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gwqs_barplot</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="WQSR_files/figure-html/gwqs_pwqs-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># boxplot of the weights estimated at each repeated holdout step, the weight distribution</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gwqs_boxplot</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="WQSR_files/figure-html/gwqs_pwqs-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="what-is-it" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-it">What is it?</h2>
-<p>Trying to estimate an overall mixture effect of multiple things.<br>
-a weighted index aka weighted adding of the components; the weights are determined within the procedure<br>
-some things will be weighted higher than others and they are contributing more to the mixture effect than others with low weights</p>
+<p>An estimate of an overall mixture effect of multiple things.<br>
+Acquiring a weighted index i.e.&nbsp;weighted sum of the components; the weights are determined within the procedure<br>
+Some things will be weighted higher than others and they are contributing more to the mixture effect than others with low weights.</p>
 <section id="wqsr-overview" class="level4">
 <h4 class="anchored" data-anchor-id="wqsr-overview">WQSR overview</h4>
 <ul>
@@ -237,7 +385,8 @@ some things will be weighted higher than others and they are contributing more t
 <li><p>You also have made the weights for each variable 100x, so you have a distribution of those, and you also take the mean for each weight -&gt; that mean is compared to tau tau is 1/number of elements in mixture so basically represents the expected weight if every element contributed equally to the mixture variables that are important are the ones whose mean weight are above the tau threshold -&gt; not a significance test!</p></li>
 </ul>
 <p>Do you have an overall mixture effect? Look at the Beta coeff distribution, acquire the sample mean (the one you would report, mentioned above), this has a normal distribution based on the central limit theorem (n=100&gt;=30), test whether the normal distributions mean parameter (aka the sample mean value) is different from 0 by conducting a t-test (because you don’t know the distribution sd, but will use the standard error) Beta can be &lt;0, meaning the effect decreases the outcome</p>
-<p>Characteriscs of weights: - The sum of all component weights <span class="math inline">\(w_{j}\)</span> should equal 1 <span class="math inline">\(\sum w_j = 1\)</span> within each train dataset. However, the final weights we have are estimates of a distribution, so it will be close to one, if not exact.<br>
+<p>Characteriscs of weights:<br>
+- The sum of all component weights <span class="math inline">\(w_{j}\)</span> should equal 1 <span class="math inline">\((\sum w_j = 1)\)</span> within each train dataset. However, the final weights we have are estimates of a distribution, so it will be close to one, if not exact.<br>
 - Bounded values: Each individual weight must be between 0 and 1 <span class="math inline">\((0 \le w_j \le 1 )\)</span>.</p>
 </section>
 </section>
