@@ -33,15 +33,15 @@ Trying to estimate an overall mixture effect of multiple things.
 a weighted index aka weighted adding of the components; the weights are determined within the procedure  
 some things will be weighted higher than others and they are contributing more to the mixture effect than others with low weights 
 
-WQSR overview:
+#### WQSR overview
 - repeatedly splits the dataset into training and test (100x) and you control
 the split 40-60 train-test (yes, train is smaller)   
-- in each of these 100x repeated train-test scenarios you:
-  - get mixture weights for each variable
-  - use mixture weights in holdout set to get a wqs for every row (observation/person)
+- in each of these 100x repeated train-test scenarios you:  
+  - get mixture weights for each variable  
+  - use mixture weights in holdout set to get a wqs for every row (observation/person)  
   - test association (acquire a beta coeff) between wqs variable and outcome variable in holdout
 (because you don't want to use the same data for testing this association as the 
-data you used to get the weights for wqs in the first place, because then you are overfitting) 
+data you used to get the weights for wqs in the first place, because then you are overfitting)   
 
 - You have done this 100 times, now you end up with a distribution of Beta coeff that
 represent the relationship between the mixture variable and the outcome in the test sets,
@@ -60,10 +60,11 @@ is different from 0 by conducting a t-test (because you don't know the distribut
 sd, but will use the standard error)
 Beta can be <0, meaning the effect decreases the outcome
 
-Characteriscs of weights: The sum of all component weights (\(w_{j}\)) should equal 1 (\(\sum w_j = 1\)) within
+Characteriscs of weights: 
+- The sum of all component weights $w_{j}$ should equal 1 $\sum w_j = 1$ within
 each train dataset. However, the final weights we have are estimates of a distribution,
-so it will be close to one, if not exact.
-Bounded values: Each individual weight must be between 0 and 1 (\(0 \le w_j \le 1\)).
+so it will be close to one, if not exact.  
+- Bounded values: Each individual weight must be between 0 and 1 $(0 \le w_j \le 1 )$.  
 
 
 ## References: 
