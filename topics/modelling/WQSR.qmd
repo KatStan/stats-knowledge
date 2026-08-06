@@ -15,8 +15,11 @@ account association with the outcome but e.g. due to exposure and/or behavior pa
 
 
 ## When can I use it?
-- Assumption #1: the relationship between the overall mixture effect (wqs) and outcome is linear
+- Assumption #1: the relationship between the overall mixture effect (wqs) and outcome is linear 
 - Assumption #2: there are no interactions between the mixture elements in their effect on the outcome (it's just additive)
+
+You check #1 by model diagnostics after fitting (covered in [Linear Regression](lin_regression.qmd))
+For #2, a literature approach can be taken, or running GLMs with interaction terms, or even running BKMR TBA for interaction testing
 
 ## How do I use it?
 - need to enforce at the beginning that all variables are either all positive or all negative relative to the outcome (e.g. you believe MEP is harmful for cognition, but that the rest of the mixture is protective of cognition, where more "cognition" means better cognition, so you would want to invert(- them) MEP values, since you believe smaller values of MEP are good for cognition i.e in the same direction as "cognition")
@@ -83,7 +86,110 @@ gwqs_barplot(results)
 gwqs_boxplot(results)
 
 ```
+## Reporting
 
+1) The first is to see the coefficient of association between the mixture and the outcome:  
+
+```{r}
+#| label: beta_coeff_assoc_plot
+
+linear_model_res <- as.data.frame(signif(coef(summary(results)), 3))
+beta_coef_95_lower <- linear_model_res["wqs","2.5 %"]
+beta_coef_95_upper <- linear_model_res["wqs","97.5 %"]
+
+bboxplot <- data.frame(term="wqs", coeff=results$coefmat[,"wqs"])
+beta_boxplot <- ggplot(bboxplot, aes(x = coeff, y = term)) +
+            # overriding the whiskers to show 95% CI
+            geom_boxplot(xmin = beta_coef_95_lower, 
+                         xmax = beta_coef_95_upper,
+                        outlier.shape = " ", 
+                          width = 0.3 ) + 
+            stat_summary(fun = mean, geom = "point", shape = 18, size = 3) + 
+            geom_jitter(alpha = 0.3) + 
+            theme_minimal() +
+            labs(title = "Mixture effect on outcome", 
+                 x = "Coefficient",
+                 y = "",
+                 caption = "Whiskers show 95% CI") +
+            xlim(0, 1.5) +
+            geom_vline(xintercept = 0, linetype = "dashed", color = "red") 
+            
+beta_boxplot
+
+```
+
+2) The second is seeing which weights are driving the mixture effect:     
+```{r}
+#| label: relevant_weights
+
+
+##### Helper function for ordering labels #############
+
+#' Bolding the ordered vector based on bolded in second vector
+#' @param ordered is vector whose order we wish to maintain 
+#' @param bolded is vector that has all elements of ordered, in a different order,
+#' with some bolded 
+#' @return Returns a vector of the same order as ordered, with the same bolded
+#' elements that are in bolded
+#' @details Bolding is done by ** before and after; the order of the ordered is
+#' not assumed, nor should be. Assumes bolded has all and only the elements in 
+#' ordered, regardless of boldness. It finds the elements that are not in both
+#' vectors identically, hence determining which elements need to be bolded in 
+#' ordered
+bold_ordered_by_bolded <- function(ordered, bolded) {
+  ifelse(ordered %in% setdiff(ordered, bolded),
+         #yes, bold it
+         paste0("**", ordered, "**"),
+         #no
+         ordered
+  )
+}
+
+
+#######################################################
+
+suppressMessages(library(tidyverse))
+suppressMessages(library(ggplot2)) 
+library(ggtext)
+
+# wmat - matrix containing the weight estimates from each repeated holdout WQS model
+
+# make new matrix containing rh*mixture_elements rows of rh, element and weight in columns
+wboxplot <- reshape2::melt(results$wmat, varnames = c("rh", "mix_name"))
+# order the mixture elements by weight descending
+wboxplot$mix_name <- factor(wboxplot$mix_name, levels = results$final_weights$mix_name)
+tau <- 1/length(results$mix_name)
+# for every element, see whether its mean is greater than tau (i.e. relevant)
+wboxplot <- wboxplot %>% group_by(mix_name) %>%
+                        # emphasis_colour has TRUE/FALSE values
+                        dplyr::mutate(emphasis_colour = mean(value) > tau,
+                                      #mix_name_labels has ** concatenated for bolding of relevant element labels
+                                      mix_name_labels = if_else(emphasis_colour, paste0("**", mix_name, "**"), mix_name), 
+                                      mix_name_labels = factor(mix_name_labels, 
+                                                               levels = bold_ordered_by_bolded(levels(mix_name), unique(mix_name_labels))
+                                                               )
+                                      ) %>%
+                        ungroup()
+
+box_plot <- ggplot(wboxplot, aes(x = mix_name_labels, y = value, colour = emphasis_colour)) +
+            geom_boxplot(outlier.shape = 4) + 
+            stat_summary(fun = mean, geom = "point", shape = 18, size = 3) + 
+            geom_jitter(alpha = 0.3) + 
+            # to control the colours and labels of the relevant weights
+            scale_colour_manual(
+              values = c("TRUE" = "#2cdea3", "FALSE" = "black"), # Hex colors or names like "red"/"blue"
+              labels = c("TRUE" = "Relevant (Mean weight > tau)", "FALSE" = "Irrelevant (Mean weight ≤ tau)") # Legend text
+            ) +
+            theme_bw() +
+            theme(axis.text.x = ggtext::element_markdown(angle = 45, hjust = 1)) + 
+            labs(title = "Relevant mixture elements determined via weights",
+                 x = "Mixture",
+                 y = "Weight",
+                 colour = "Relevant elements") 
+
+# add tau line
+box_plot +  geom_hline(yintercept = tau, linetype="dashed", color = "red")
+```
 
 
 ## What is it?
