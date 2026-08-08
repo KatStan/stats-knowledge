@@ -1,5 +1,5 @@
 ---
-title: "Weighted Quantile Sum Rregression (WQSR) DRAFT"
+title: "Weighted Quantile Sum Rregression (WQSR)"
 format: html
 ---
 
@@ -117,6 +117,17 @@ beta_boxplot <- ggplot(bboxplot, aes(x = coeff, y = term)) +
 beta_boxplot
 
 ```
+
+As WQSR was run by treating each chemical as deciles (q=10), the wqs index is 
+between 0 and 9 (as the weighted sum of deciles where the weights sum up to 1).
+Also the change in one unit of wqs is a change that equates to a 1 decile change 
+in wqs. Because this might be an insignificant change in exposures, a common way
+to report is via moving from a person with low chemical exposure (25th percentile wqs) 
+to a person with high chemical exposure (75th percentile wqs), a.k.a. an interquartile
+range (IQR) increase. As seen in [Linear Regression](lin_regression.qmd), this 
+means the effect per IQR is: $\beta _{\text{IQR}}=\beta _{\text{raw}}\times \text{IQR}$
+where $\text{IQR} = q_{75\%,wqs} - q_{25\%,wqs}$  
+
 
 2) The second is seeing which weights are driving the mixture effect:     
 ```{r}

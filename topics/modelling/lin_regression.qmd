@@ -170,7 +170,8 @@ and the numbers (unstandardised regression coefficients, standardised if makes s
 standard errors, t values, rResidual standard error, residual df, adjusted $R^2$ 
 if multivariable, CIs and p-values).  
 All examples here assume you have been through the assessment of your linear model
-and are happy with it.
+and are happy with it.  
+For now, outcomes are continuous and the tabs talk about predictors
 
 ### Continuous, no scaling
 
@@ -385,6 +386,13 @@ E(log(Y)|\mathbf{x_j}) -  E(log(Y)|\mathbf{x}) = \beta_j \iff e^{E(log(Y)|\mathb
 $$
 Taking the exponent of the average log is the definition of a geometric mean:
 $$ e^{E(logY|x)} = e^{\frac{1}{n}(log(y_1) + .. +log(y_n))} = e^{\frac{1}{n}(log(y_1*..*y_n))} = e^{log((y_1*..*y_n)^\frac{1}{n})} = (y_1*..*y_n)^\frac{1}{n} \rightarrow geometric~mean $$
+
+### Changing from unit to percentile 
+
+To report moving from the x^th^ to the y^th^ percentile:  
+Calculate the value of your predictor at both percentiles, find the difference, 
+and multiply that difference by the coefficient: 
+$\beta _{\text{y-x}}=\beta _{\text{raw}}\times (q_{y\%,pred} - q_{x\%,pred})$
 
 ## R caveats/defaults 
 ### R caveats/defaults I need to know about?
