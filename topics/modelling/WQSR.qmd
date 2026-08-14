@@ -37,7 +37,7 @@ one in the positive direction (`pwqs`) and one in the negative (`nwqs`). This wa
 ```{r}
 #| label:  gwqs
 
-library(gWQS)
+suppressMessages(library(gWQS))
 # we save the names of the mixture variables in the variable "PCBs"
 PCBs <- names(wqs_data)[1:34]
 # we run the model 
@@ -230,17 +230,17 @@ if every element contributed equally to the mixture
 variables that are important are the ones whose mean weight are above the
 tau threshold -> not a significance test!
 
-Do you have an overall mixture effect? Look at the Beta coeff distribution, acquire
+- Do you have an overall mixture effect? Look at the Beta coeff distribution, acquire
 the sample mean (the one you would report, mentioned above), this has a normal distribution based on the central limit theorem (n=100>=30), test whether the normal distributions mean parameter (aka the sample mean value)
 is different from 0 by conducting a t-test (because you don't know the distribution
 sd, but will use the standard error)
 Beta can be <0, meaning the effect decreases the outcome
 
-Characteriscs of weights:  
-- The sum of all component weights $w_{j}$ should equal 1 $(\sum w_j = 1)$ within
+- Characteristics of weights:    
+  - The sum of all component weights $w_{j}$ should equal 1 $(\sum w_j = 1)$ within
 each train dataset. However, the final weights we have are estimates of a distribution,
-so it will be close to one, if not exact.  
-- Bounded values: Each individual weight must be between 0 and 1 $(0 \le w_j \le 1 )$.  
+so it will be close to one, if not exact    
+  - Bounded values: Each individual weight must be between 0 and 1 $(0 \le w_j \le 1 )$   
 
 
 ## References: 
