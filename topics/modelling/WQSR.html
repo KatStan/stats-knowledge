@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Weighted Quantile Sum Rregression (WQSR) DRAFT – Stats knowledgebase</title>
+<title>Weighted Quantile Sum Rregression (WQSR) – Stats knowledgebase</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-6ac2aec46ad7f46b16024ee4409aa65c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-e3adbaa939bcd423dddc8c8a834270b4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -196,6 +196,7 @@ window.Quarto = {
   <li><a href="#when-can-i-use-it" id="toc-when-can-i-use-it" class="nav-link" data-scroll-target="#when-can-i-use-it">When can I use it?</a></li>
   <li><a href="#how-do-i-use-it" id="toc-how-do-i-use-it" class="nav-link" data-scroll-target="#how-do-i-use-it">How do I use it?</a></li>
   <li><a href="#code-usage-examples" id="toc-code-usage-examples" class="nav-link" data-scroll-target="#code-usage-examples">Code usage examples</a></li>
+  <li><a href="#reporting" id="toc-reporting" class="nav-link" data-scroll-target="#reporting">Reporting</a></li>
   <li><a href="#what-is-it" id="toc-what-is-it" class="nav-link" data-scroll-target="#what-is-it">What is it?</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
   </ul>
@@ -206,7 +207,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Weighted Quantile Sum Rregression (WQSR) DRAFT</h1>
+<h1 class="title">Weighted Quantile Sum Rregression (WQSR)</h1>
 </div>
 
 
@@ -234,6 +235,7 @@ Commonly used in environmental (chemical) mixture risk evaluation, since more co
 <li>Assumption #1: the relationship between the overall mixture effect (wqs) and outcome is linear</li>
 <li>Assumption #2: there are no interactions between the mixture elements in their effect on the outcome (it’s just additive)</li>
 </ul>
+<p>You check #1 by model diagnostics after fitting (covered in <a href="../../topics/modelling/lin_regression.html">Linear Regression</a>) For #2, a literature approach can be taken, or running GLMs with interaction terms, or even running BKMR TBA for interaction testing</p>
 </section>
 <section id="how-do-i-use-it" class="level2">
 <h2 class="anchored" data-anchor-id="how-do-i-use-it">How do I use it?</h2>
@@ -358,6 +360,122 @@ Mean AIC:  905.08 </code></pre>
 <div>
 <figure class="figure">
 <p><img src="WQSR_files/figure-html/gwqs_pwqs-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="reporting" class="level2">
+<h2 class="anchored" data-anchor-id="reporting">Reporting</h2>
+<ol type="1">
+<li>The first is to see the coefficient of association between the mixture and the outcome:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(tidyverse))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(ggplot2)) </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtext)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>linear_model_res <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">signif</span>(<span class="fu">coef</span>(<span class="fu">summary</span>(results)), <span class="dv">3</span>))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>beta_coef_95_lower <span class="ot">&lt;-</span> linear_model_res[<span class="st">"wqs"</span>,<span class="st">"2.5 %"</span>]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>beta_coef_95_upper <span class="ot">&lt;-</span> linear_model_res[<span class="st">"wqs"</span>,<span class="st">"97.5 %"</span>]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>bboxplot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">term=</span><span class="st">"wqs"</span>, <span class="at">coeff=</span>results<span class="sc">$</span>coefmat[,<span class="st">"wqs"</span>])</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>beta_boxplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(bboxplot, <span class="fu">aes</span>(<span class="at">x =</span> coeff, <span class="at">y =</span> term)) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="co"># overriding the whiskers to show 95% CI</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            <span class="fu">geom_boxplot</span>(<span class="at">xmin =</span> beta_coef_95_lower, </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                         <span class="at">xmax =</span> beta_coef_95_upper,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                        <span class="at">outlier.shape =</span> <span class="st">" "</span>, </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                          <span class="at">width =</span> <span class="fl">0.3</span> ) <span class="sc">+</span> </span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">geom_jitter</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span> </span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mixture effect on outcome"</span>, </span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="st">"Coefficient"</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="st">""</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>                 <span class="at">caption =</span> <span class="st">"Whiskers show 95% CI"</span>) <span class="sc">+</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>            <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>            <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>) </span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>beta_boxplot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="WQSR_files/figure-html/beta_coeff_assoc_plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As WQSR was run by treating each chemical as deciles (q=10), the wqs index is between 0 and 9 (as the weighted sum of deciles where the weights sum up to 1). Also the change in one unit of wqs is a change that equates to a 1 decile change in wqs. Because this might be an insignificant change in exposures, a common way to report is via moving from a person with low chemical exposure (25th percentile wqs) to a person with high chemical exposure (75th percentile wqs), a.k.a. an interquartile range (IQR) increase. As seen in <a href="../../topics/modelling/lin_regression.html">Linear Regression</a>, this means the effect per IQR is: <span class="math inline">\(\beta _{\text{IQR}}=\beta _{\text{raw}}\times \text{IQR}\)</span> where <span class="math inline">\(\text{IQR} = q_{75\%,wqs} - q_{25\%,wqs}\)</span></p>
+<ol start="2" type="1">
+<li>The second is seeing which weights are driving the mixture effect:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### Helper function for ordering labels #############</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' Bolding the ordered vector based on bolded in second vector</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param ordered is vector whose order we wish to maintain </span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param bolded is vector that has all elements of ordered, in a different order,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' with some bolded </span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return Returns a vector of the same order as ordered, with the same bolded</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#' elements that are in bolded</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#' @details Bolding is done by ** before and after; the order of the ordered is</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#' not assumed, nor should be. Assumes bolded has all and only the elements in </span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#' ordered, regardless of boldness. It finds the elements that are not in both</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#' vectors identically, hence determining which elements need to be bolded in </span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#' ordered</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>bold_ordered_by_bolded <span class="ot">&lt;-</span> <span class="cf">function</span>(ordered, bolded) {</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(ordered <span class="sc">%in%</span> <span class="fu">setdiff</span>(ordered, bolded),</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>         <span class="co">#yes, bold it</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>         <span class="fu">paste0</span>(<span class="st">"**"</span>, ordered, <span class="st">"**"</span>),</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>         <span class="co">#no</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>         ordered</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="do">#######################################################</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co"># wmat - matrix containing the weight estimates from each repeated holdout WQS model</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="co"># make new matrix containing rh*mixture_elements rows of rh, element and weight in columns</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>wboxplot <span class="ot">&lt;-</span> reshape2<span class="sc">::</span><span class="fu">melt</span>(results<span class="sc">$</span>wmat, <span class="at">varnames =</span> <span class="fu">c</span>(<span class="st">"rh"</span>, <span class="st">"mix_name"</span>))</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co"># order the mixture elements by weight descending</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>wboxplot<span class="sc">$</span>mix_name <span class="ot">&lt;-</span> <span class="fu">factor</span>(wboxplot<span class="sc">$</span>mix_name, <span class="at">levels =</span> results<span class="sc">$</span>final_weights<span class="sc">$</span>mix_name)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">length</span>(results<span class="sc">$</span>mix_name)</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="co"># for every element, see whether its mean is greater than tau (i.e. relevant)</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>wboxplot <span class="ot">&lt;-</span> wboxplot <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(mix_name) <span class="sc">%&gt;%</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># emphasis_colour has TRUE/FALSE values</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>                        dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">emphasis_colour =</span> <span class="fu">mean</span>(value) <span class="sc">&gt;</span> tau,</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>                                      <span class="co">#mix_name_labels has ** concatenated for bolding of relevant element labels</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">mix_name_labels =</span> <span class="fu">if_else</span>(emphasis_colour, <span class="fu">paste0</span>(<span class="st">"**"</span>, mix_name, <span class="st">"**"</span>), mix_name), </span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">mix_name_labels =</span> <span class="fu">factor</span>(mix_name_labels, </span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>                                                               <span class="at">levels =</span> <span class="fu">bold_ordered_by_bolded</span>(<span class="fu">levels</span>(mix_name), <span class="fu">unique</span>(mix_name_labels))</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>                                                               )</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>                                      ) <span class="sc">%&gt;%</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">ungroup</span>()</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>box_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(wboxplot, <span class="fu">aes</span>(<span class="at">x =</span> mix_name_labels, <span class="at">y =</span> value, <span class="at">colour =</span> emphasis_colour)) <span class="sc">+</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>            <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="dv">4</span>) <span class="sc">+</span> </span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>            <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>            <span class="fu">geom_jitter</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span> </span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>            <span class="co"># to control the colours and labels of the relevant weights</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>            <span class="fu">scale_colour_manual</span>(</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>              <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"#2cdea3"</span>, <span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"black"</span>), <span class="co"># Hex colors or names like "red"/"blue"</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>              <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"Relevant (Mean weight &gt; tau)"</span>, <span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"Irrelevant (Mean weight ≤ tau)"</span>) <span class="co"># Legend text</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">+</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>            <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text.x =</span> ggtext<span class="sc">::</span><span class="fu">element_markdown</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relevant mixture elements determined via weights"</span>,</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="st">"Mixture"</span>,</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="st">"Weight"</span>,</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">"Relevant elements"</span>) </span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a><span class="co"># add tau line</span></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>box_plot <span class="sc">+</span>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> tau, <span class="at">linetype=</span><span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="WQSR_files/figure-html/relevant_weights-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
