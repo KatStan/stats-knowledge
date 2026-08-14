@@ -93,6 +93,10 @@ gwqs_boxplot(results)
 ```{r}
 #| label: beta_coeff_assoc_plot
 
+suppressMessages(library(tidyverse))
+suppressMessages(library(ggplot2)) 
+library(ggtext)
+
 linear_model_res <- as.data.frame(signif(coef(summary(results)), 3))
 beta_coef_95_lower <- linear_model_res["wqs","2.5 %"]
 beta_coef_95_upper <- linear_model_res["wqs","97.5 %"]
@@ -158,10 +162,6 @@ bold_ordered_by_bolded <- function(ordered, bolded) {
 
 
 #######################################################
-
-suppressMessages(library(tidyverse))
-suppressMessages(library(ggplot2)) 
-library(ggtext)
 
 # wmat - matrix containing the weight estimates from each repeated holdout WQS model
 
