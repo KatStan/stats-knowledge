@@ -168,14 +168,6 @@ function goToTab(tabId) {
   <li><a href="#how-do-i-use-it" id="toc-how-do-i-use-it" class="nav-link" data-scroll-target="#how-do-i-use-it">How do I use it?</a></li>
   <li><a href="#tuning" id="toc-tuning" class="nav-link" data-scroll-target="#tuning">Tuning</a></li>
   <li><a href="#reporting" id="toc-reporting" class="nav-link" data-scroll-target="#reporting">Reporting</a></li>
-  <li><a href="#without-collinearity" id="toc-without-collinearity" class="nav-link" data-scroll-target="#without-collinearity">Without collinearity</a>
-  <ul class="collapse">
-  <li><a href="#without-highly-collinear-elements-no-groups" id="toc-without-highly-collinear-elements-no-groups" class="nav-link" data-scroll-target="#without-highly-collinear-elements-no-groups">Without highly collinear elements (no groups):</a></li>
-  </ul></li>
-  <li><a href="#with-collinearity" id="toc-with-collinearity" class="nav-link" data-scroll-target="#with-collinearity">With collinearity</a>
-  <ul class="collapse">
-  <li><a href="#with-highly-collinear-elements" id="toc-with-highly-collinear-elements" class="nav-link" data-scroll-target="#with-highly-collinear-elements">With highly collinear elements</a></li>
-  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -229,10 +221,11 @@ The Metropolis–Hastings tuning parameters were adjusted to achieve an acceptan
 </section>
 <section id="reporting" class="level2">
 <h2 class="anchored" data-anchor-id="reporting">Reporting</h2>
-<p>Now that you have tuned your model, report your findings. For now, these assume a continuous outcome ::: {.panel-tabset}</p>
-</section>
-<section id="without-collinearity" class="level2">
-<h2 class="anchored" data-anchor-id="without-collinearity">Without collinearity</h2>
+<p>Now that you have tuned your model, report your findings. For now, these assume a continuous outcome</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Without collinearity</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">With collinearity</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <section id="without-highly-collinear-elements-no-groups" class="level3">
 <h3 class="anchored" data-anchor-id="without-highly-collinear-elements-no-groups">Without highly collinear elements (no groups):</h3>
 <div class="cell">
@@ -256,34 +249,34 @@ The Metropolis–Hastings tuning parameters were adjusted to achieve an acceptan
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># r.jump if varsel=FALSE </span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                       )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 1000 (10% completed; 2.33223 secs elapsed)</code></pre>
+<pre><code>Iteration: 1000 (10% completed; 2.24893 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 2000 (20% completed; 4.24354 secs elapsed)</code></pre>
+<pre><code>Iteration: 2000 (20% completed; 4.06386 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 3000 (30% completed; 5.93286 secs elapsed)</code></pre>
+<pre><code>Iteration: 3000 (30% completed; 5.70541 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 4000 (40% completed; 7.80273 secs elapsed)</code></pre>
+<pre><code>Iteration: 4000 (40% completed; 7.50785 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 5000 (50% completed; 9.72781 secs elapsed)</code></pre>
+<pre><code>Iteration: 5000 (50% completed; 9.45777 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 6000 (60% completed; 11.78938 secs elapsed)</code></pre>
+<pre><code>Iteration: 6000 (60% completed; 11.52759 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 7000 (70% completed; 13.49384 secs elapsed)</code></pre>
+<pre><code>Iteration: 7000 (70% completed; 13.21343 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 8000 (80% completed; 15.37872 secs elapsed)</code></pre>
+<pre><code>Iteration: 8000 (80% completed; 15.03212 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 9000 (90% completed; 17.27101 secs elapsed)</code></pre>
+<pre><code>Iteration: 9000 (90% completed; 16.85818 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 10000 (100% completed; 18.96614 secs elapsed)</code></pre>
+<pre><code>Iteration: 10000 (100% completed; 18.51077 secs elapsed)</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The posterior inclusion probabilities (PIPs) cleary indicate that z1 and z2 </span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># should be included in the model (strong evidence would be &gt;= 90 or 95 even)</span></span>
@@ -464,9 +457,8 @@ The Metropolis–Hastings tuning parameters were adjusted to achieve an acceptan
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># percentile, as compared to when all other z are fixed at their 75th percentile.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-</section>
-<section id="with-collinearity" class="level2">
-<h2 class="anchored" data-anchor-id="with-collinearity">With collinearity</h2>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <section id="with-highly-collinear-elements" class="level3">
 <h3 class="anchored" data-anchor-id="with-highly-collinear-elements">With highly collinear elements</h3>
 <div class="cell">
@@ -492,34 +484,34 @@ The Metropolis–Hastings tuning parameters were adjusted to achieve an acceptan
 <span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># r.jump if varsel=FALSE</span></span>
 <span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>                       )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 1000 (10% completed; 2.29057 secs elapsed)</code></pre>
+<pre><code>Iteration: 1000 (10% completed; 2.49283 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 2000 (20% completed; 4.78409 secs elapsed)</code></pre>
+<pre><code>Iteration: 2000 (20% completed; 4.95186 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 3000 (30% completed; 7.25055 secs elapsed)</code></pre>
+<pre><code>Iteration: 3000 (30% completed; 7.40283 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 4000 (40% completed; 9.53883 secs elapsed)</code></pre>
+<pre><code>Iteration: 4000 (40% completed; 9.67221 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 5000 (50% completed; 11.82496 secs elapsed)</code></pre>
+<pre><code>Iteration: 5000 (50% completed; 11.94774 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 6000 (60% completed; 14.12208 secs elapsed)</code></pre>
+<pre><code>Iteration: 6000 (60% completed; 14.41714 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 7000 (70% completed; 16.6107 secs elapsed)</code></pre>
+<pre><code>Iteration: 7000 (70% completed; 16.6995 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 8000 (80% completed; 18.89709 secs elapsed)</code></pre>
+<pre><code>Iteration: 8000 (80% completed; 18.9658 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 9000 (90% completed; 21.23203 secs elapsed)</code></pre>
+<pre><code>Iteration: 9000 (90% completed; 21.25189 secs elapsed)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Iteration: 10000 (100% completed; 23.51594 secs elapsed)</code></pre>
+<pre><code>Iteration: 10000 (100% completed; 23.73542 secs elapsed)</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The posterior inclusion probabilities (PIPs) for groups indicate that one of </span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the pollutants from Group 1 should be included. Looking at the exposures z1</span></span>
@@ -699,8 +691,10 @@ The Metropolis–Hastings tuning parameters were adjusted to achieve an acceptan
 <span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># compared to when all other z are fixed at their 75th percentile, meaning no </span></span>
 <span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="co"># "interaction" between them </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>:::</p>
 </section>
+</div>
+</div>
+</div>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
