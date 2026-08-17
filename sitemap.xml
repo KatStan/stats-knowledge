@@ -2,26 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://KatStan.github.io/stats-knowledge/topics/modelling/WQSR.html</loc>
-    <lastmod>2026-08-14T17:09:04.192Z</lastmod>
-  </url>
-  <url>
-    <loc>https://KatStan.github.io/stats-knowledge/topics/others_tba/topic1.html</loc>
-    <lastmod>2026-08-14T17:09:04.193Z</lastmod>
-  </url>
-  <url>
-    <loc>https://KatStan.github.io/stats-knowledge/index.html</loc>
-    <lastmod>2026-08-14T17:09:04.189Z</lastmod>
-  </url>
-  <url>
-    <loc>https://KatStan.github.io/stats-knowledge/about.html</loc>
-    <lastmod>2026-08-14T17:09:04.174Z</lastmod>
-  </url>
-  <url>
-    <loc>https://KatStan.github.io/stats-knowledge/topics/visualisations/boxplots.html</loc>
-    <lastmod>2026-08-14T17:09:04.193Z</lastmod>
+    <lastmod>2026-08-17T19:31:32.911Z</lastmod>
   </url>
   <url>
     <loc>https://KatStan.github.io/stats-knowledge/topics/modelling/lin_regression.html</loc>
-    <lastmod>2026-08-14T17:09:04.193Z</lastmod>
+    <lastmod>2026-08-17T19:31:32.911Z</lastmod>
+  </url>
+  <url>
+    <loc>https://KatStan.github.io/stats-knowledge/topics/visualisations/boxplots.html</loc>
+    <lastmod>2026-08-17T19:31:32.911Z</lastmod>
+  </url>
+  <url>
+    <loc>https://KatStan.github.io/stats-knowledge/about.html</loc>
+    <lastmod>2026-08-17T19:31:32.895Z</lastmod>
+  </url>
+  <url>
+    <loc>https://KatStan.github.io/stats-knowledge/index.html</loc>
+    <lastmod>2026-08-17T19:31:32.907Z</lastmod>
+  </url>
+  <url>
+    <loc>https://KatStan.github.io/stats-knowledge/topics/others_tba/topic1.html</loc>
+    <lastmod>2026-08-17T19:31:32.911Z</lastmod>
+  </url>
+  <url>
+    <loc>https://KatStan.github.io/stats-knowledge/topics/modelling/BKMR.html</loc>
+    <lastmod>2026-08-17T19:31:32.910Z</lastmod>
   </url>
 </urlset>
