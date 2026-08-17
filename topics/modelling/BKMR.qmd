@@ -1,5 +1,5 @@
 ---
-title: "BKMR (DRAFT)"
+title: "BKMR"
 format: html
 ---
 
@@ -16,21 +16,22 @@ relationships with health
 
 ## How do I use it?
 
-- enable variable selection  
-- if you are aware of highly collinear elements in the mixture, add this knowledge
+- Enable variable selection  
+- If you are aware of highly collinear elements in the mixture, add this knowledge
 to the model (by specifying which groups of elements are collinear)  
-- tune the model!  
+- Tune the model!  
 
 
 ## Tuning
 
-TBA
-https://jenfb.github.io/bkmr/overview.html
-https://cran.r-project.org/web/packages/bkmrhat/vignettes/bkmrhat-vignette.html
+TBA  
+https://jenfb.github.io/bkmr/overview.html  
+https://cran.r-project.org/web/packages/bkmrhat/vignettes/bkmrhat-vignette.html  
 The Metropolis–Hastings tuning parameters were adjusted to achieve an acceptance rate of 20–50%
 
 ## Reporting
-
+Now that you have tuned your model, report your findings. For now, these
+assume a continuous outcome
 ::: {.panel-tabset}
 
 ## Without collinearity
@@ -59,8 +60,8 @@ fitkm_comp <- bkmr::kmbayes(y = y, # vector of outcomes
                        # r.jump if varsel=FALSE 
                        )
 
-# The posterior inclusion probabilities (PIPs) cleary indicate that z2 should be
-# included in the model, but there is not that strong evidence that z1 should be
+# The posterior inclusion probabilities (PIPs) cleary indicate that z1 and z2 
+# should be included in the model (strong evidence would be >= 90 or 95 even)
 
 bkmr::ExtractPIPs(fitkm_comp)
 
@@ -166,7 +167,7 @@ risks.int <- bkmr::SingVarIntSummaries(fit = fitkm_comp, y = y, Z = Z, X = X,
 risks.int
  
 # We see that single pollutant risk associated with a change in z1 from its 25th
-# to 75th percentile increases by 0.68 when all other z are fixed at their 25th 
+# to 75th percentile increases by 0.7 when all other z are fixed at their 25th 
 # percentile, as compared to when all other z are fixed at their 75th percentile.
  
 
