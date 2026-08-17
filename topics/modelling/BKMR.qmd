@@ -32,6 +32,7 @@ The Metropolis–Hastings tuning parameters were adjusted to achieve an acceptan
 ## Reporting
 Now that you have tuned your model, report your findings. For now, these
 assume a continuous outcome
+
 ::: {.panel-tabset}
 
 ## Without collinearity
