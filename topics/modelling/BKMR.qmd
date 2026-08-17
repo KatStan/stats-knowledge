@@ -31,7 +31,10 @@ The Metropolis–Hastings tuning parameters were adjusted to achieve an acceptan
 
 ## Reporting
 
-Without highly collinear elements (no groups):
+::: {.panel-tabset}
+
+## Without collinearity
+### Without highly collinear elements (no groups):
 
 ```{r}
 #| label: bkmr_no_groups_example
@@ -168,8 +171,9 @@ risks.int
  
 
 ```
+## With collinearity
+### With highly collinear elements
 
-With highly collinear elements:
 
 ```{r}
 #| label: bkmr_groups_example
@@ -311,6 +315,8 @@ risks.int
 
 
 ```
+:::
+
 
 ## References
 ::: {.refs-small-text}
