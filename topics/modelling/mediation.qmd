@@ -1,0 +1,336 @@
+---
+title: "mediation"
+format: html
+---
+
+## What question does this answer?
+How does an exposure affect an outcome via an intermediate variable?
+Does the effect of exposure to outcome change now that we've introduced another
+variable in the mix that the exposure does have an effect on?
+Causal inference by finding an underlying mechanism under effect of the exposure,
+and contributing to the outcome (be wary or saying something causes something,
+experimental setup is critical there). A mediator explains the underlying mechanism 
+of the relationship between the exposure and the outcome. 
+
+## What is it doing?
+We have an exposure that has an effect (at least theoretically a relationship)
+with the outcome, and we have another variable that the exposure has an effect on
+generally (remember to see assumptions below in @sec-when!) This other variable 
+we'll call the mediator.
+Effectively, we care about whether there is a difference in the exposure's
+effect on the outcome now that we have introduced the mediator, or not.
+
+## When can I use it? {#sec-when}
+
+- There is a relationship between exposure and outcome (even if the regression
+doesn't return significance, if there is a good theoretical reasoning, that's
+enough). Without a relationship, there is nothing to mediate  
+- There is a relationship between exposure and mediator, as is the idea that the
+exposure affects the mediator that affects the outcome
+- The outcome is binary -> **not a requirement**, just a package(s) and result 
+interpretation convenience  
+- Assumptions:  
+  1) Must control for exposure-outcome confounding (i.e. include all covariates)  
+  2) Must control for mediator-outcome confounding   
+  3) Must control for exposure-mediator confounding   
+  4) The exposure must not be affecting any of the mediator-outcome confounders 
+(o/w C2 would be a mediator of E -> Y and is hence confounding the effect of M on Y)  
+
+
+**Note #1:** In practice, some of the covariates may affect all of E, M and Y, and 
+the covariates may also affect each other. None of this is problematic
+and the covariate groups C1, C2, and C3 need not be distinguished from one another. What is
+important is that the covariates included in the regression models above suffice to control for
+exposure-outcome, mediator-outcome, and exposure-mediator confounding
+
+**Note #2:** Another way to think about the fourth assumption is that there should 
+be relatively little time between the exposure and the mediator. If a substantial
+gap exists, then the fourth assumption requires that nothing on the pathway from
+the exposure to the mediator itself also independently affects the outcome.
+This assumption likely becomes increasingly less plausible the more time that 
+elapses between the exposure and the mediator
+
+
+## Reporting
+
+- Total effect/TE is the effect of X on Y without M (Y~X)  
+- Direct effect/NDE/ADE is the effect of X on Y with M (Y~X+M)  
+- Indirect effect/NIE/ACME is total minus direct, and what you want to see whether it is 
+significant, as that answers the question of whether X works through M to effect
+Y, i.e. whether M affects Y, but X no longer affects Y as much, now that M is there. 
+
+:::{.panel-tabset}
+
+### Mediation
+
+Since the sequential ignorability assumption is untestable, we recommend that 
+the researchers conduct a sensitivity analysis via the `medsens` function, 
+which can be applied to certain statistical models - **TBA**
+In practice, you won't be 100% sure of whether you have included all confounders,
+so sensitivity analyses to test for robustness of the in/direct estimates are necessary
+
+- You can have the mediator model and the outcome model have different covariates
+(as in, you can add more covariates to the outcome model)
+
+```{r}
+#| label: mediation_pckg
+
+set.seed(2014)
+data("framing", package = "mediation")
+
+# The data captures subjects that were exposed to different media stories about 
+# immigration and the authors investigated how their framing influences
+# attitudes and political behavior regarding immigration policy. They propose anxiety
+# as the mediating variable for the causal effect of framing on public opinion. 
+# We first fit the mediator model where the measure of anxiety (emo) is modeled as
+# a function of the framing treatment (treat - binary) and pre-treatment covariates (age, 
+# educ, gender, and income). Next, we model the outcome variable, which is a binary
+# variable indicating whether or not the participant agreed to send a letter about
+# immigration policy to his or her member of Congress (cong_mesg - binary). The 
+# explanatory variables of the outcome model include the mediator, treatment status,
+# and the same set of pre-treatment variables as those used in the mediator model.
+# In this example, the treatment is expected to increase the level of respondents'
+# emotional response, which in turn is hypothesized to make subjects more likely 
+# to send a letter to his or her member of Congress. 
+
+med.fit <- lm(emo ~ treat + age + educ + gender + income, data = framing)
+out.fit <- glm(cong_mesg ~ emo + treat + age + educ + gender + income,
+                          data = framing, family = binomial("probit"))
+
+# In general, as long as computing power is not an issue, analysts should
+# estimate confidence intervals via the bootstrap (boot=TRUE) with more than 1000 
+# resamples, which is the default number of simulations (sims)
+# The bias-corrected and accelerated (BCa) intervals has better asymptotic properties 
+# and is often recommended for the estimation of mediation effects (Preacher and Hayes 2008)
+med.out <- mediation::mediate(med.fit, 
+                   out.fit, 
+                   treat = "treat", # treat is short for treatment aka exposure
+                   mediator = "emo",
+                   boot = TRUE,
+                   boot.ci.type = "bca",
+                   sims = 1000)
+
+summary(med.out)
+# ...
+# Total Effect              0.095797    -0.030523     0.234075   0.136
+# ...
+# ACME (average)            0.083833     0.037913     0.144588  <2e-16 ***
+# ADE (average)             0.011964    -0.097811     0.142607   0.794    
+# Prop. Mediated (average)  0.875106     0.315506    37.469486   0.136    
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Sample Size Used: 265
+
+
+```
+In this example, the estimated ACMEs are statistically significantly different 
+from zero. The results suggest that the treatment in the framing experiment may 
+have increased emotional response, which in turn made subjects more likely to send 
+a message to his or her member of Congress. Here, since the outcome is binary, 
+all estimated effects are expressed as the **increase in probability** that the 
+subject sent a message to his or her Congress person.
+
+The ACME is the estimated average increase in the dependent variable on average 
+that arrives as a result of the mediators rather than 'directly' from the treatment.
+The ACME (control) is the estimated average increase in the dependent variable
+among the control group hat arrives as a result of the mediators rather than 
+'directly' from the treatment.
+
+If the outcome (and mediator) is continuous, ACME is in units of the outcome and
+interpreting it is like for a standard linear regression (if data was scaled, 
+then it is in standard deviations, not 1-unit changes).  
+So if we had here 0.083 for ACME and the outcome was continuous, and we scaled 
+at least the exposure and outcome, it would be interpreted as a 1-standard-deviation
+increase in the exposure, then the pathway through the mediator "causes' the outcome 
+to change by 0.083 standard deviations on average (rather than through 'just' the exposure).  
+If it's just the exposure that's scaled, a 1-standard-deviation increase in the exposure, 
+then the pathway through the mediator causes the outcome to change by 0.083 raw units.  
+If it were only the outcome that was scaled, a 1-unit increase in the exposure would lead to the 
+pathway through the mediator causing the outcome to change by 0.083 standard deviations.
+
+This is the average effect for "everyone",  ignoring individual covariate differences.
+
+
+### Medlfex
+
+- The neWeight/neImpute model and the neModel model have to have the same 
+covariates (based on the vignette)
+- caveat: when wrapping medflex mediation in a function,
+it searches for global environment variables, instead of inside the function's env
+
+
+```{r}
+#| label: medflex_pckg
+ 
+set.seed(2014)
+data("UPBdata", package = "medflex")
+
+# The data is a subsample of 385 individuals from a survey study that involved the
+# recruitment of individuals who divorced between March 2008 and March 2009 in
+# four major courts in Flanders.
+# It aimed to improve the quality of life in families during and after the divorce 
+# by translating research findings into practical guidelines for separation 
+# specialists (such as lawyers, judges, psychologists, welfare workers...) and by
+# promoting evidence-based policy. The corresponding dataset (UPBdata) involves 
+# those who responded to a battery of questionnaires related to romantic relationship 
+# characteristics (such as adult attachment style) and breakup characteristics 
+# (such as breakup initiator status, experiencing negative affectivity and 
+# engaging in unwanted pursuit behaviors; UPB) (DeSmet, Loeys, and Buysse 2012). 
+# Respondents were asked to imagine their former partner as well as possible and 
+# to remember how they generally felt in their relationship before the breakup 
+# when completing the attachment style questionnaire. The mediation hypothesis of
+# interest concerned the question whether the level of emotional distress or 
+# negative affectivity experienced during the breakup can be regarded as an 
+# intermediate mechanism (M) through which attachment style towards the ex-partner
+# before the breakup (X) exerts its influence on displaying UPBs after the breakup
+# (Y) 
+
+# As direct and indirect effects are most easily understood for a binary exposure, 
+# we will use a dichotomized version of anxious attachment level (attbin) for 
+# didactic purposes. Moreover, negative affectivity (negaff) has been standardized 
+# (sd=1) to allow for easily interpretable effect estimates. The original att has 
+# been scaled. The outcome variable unwanted pursuit behavior (UPB) indicates 
+# whether (=1) or not (=0) the respondent has engaged in any unwanted pursuit 
+#behaviors.
+
+medFit <- glm(negaff ~ factor(attbin) + gender + educ + age,
+              family = gaussian, 
+              data = UPBdata)
+
+expData <- medflex::neWeight(medFit)
+
+# The new variables attbin0 and attbin1 correspond to hypothetical exposure 
+# values x and x∗, respectively. By convention, the index ‘0’ is used for 
+# parameters (and corresponding auxiliary variables) indexing natural direct 
+# effects, whereas the index ‘1’ is used for parameters indexing natural indirect 
+# effects in the natural effect model. To shorten code, one can instead choose to 
+# directly specify the formula, family and data arguments in neWeight.
+
+expData <- medflex::neWeight(negaff ~ factor(attbin) + gender + educ + age, 
+                             family = gaussian, 
+                             data = UPBdata)
+
+# As an alternative, robust standard errors based on the sandwich estimator 
+# (Liang and Zeger 1986) can be requested by setting se = "robust". Calculation 
+# of these standard errors is less computer-intensive and is available for natural 
+# effect models with working models fitted via the glm function
+
+neMod1 <- medflex::neModel(UPB ~ attbin0 + attbin1 + gender + educ + age, 
+                           family = binomial("logit"), 
+                           expData = expData,
+                             se = "robust")
+
+
+# The summary table of the resulting natural effect model object provides these 
+# bootstrap standard errors along with corresponding Wald-type z statistics and
+# p values
+summary(neMod1)
+# you could also see the total effect by using
+medflex::neEffdecomp(neMod1)
+
+```
+
+A counterfactual model reporting:  
+Exponentiating the model parameter estimates provides estimates that can be 
+interpreted as odds ratios. For instance, for a subject with baseline covariate 
+levels C, altering the level of anxious attachment from low (=0) to high (=1), 
+while controlling negative affectivity at levels as naturally observed at any 
+given level of anxious attachment x, increases the odds of displaying unwanted 
+pursuit behaviors with a factor $e^{\beta_1} = e^{0.3959} = 1.49$ (natural direct effect)
+
+Altering levels of negative affectivity as observed at low anxious attachment scores
+to levels that would have been observed at high anxious attachment scores, while
+controlling their anxious attachment score at any given level x, increases the 
+odds of displaying unwanted pursuit behaviors with a factor  $e^{\beta_2} = e^{0.352} = 1.42$ 
+(natural indirect effect).
+
+```{r}
+#| label: medflex_pckg_conf_int
+
+# Wald-type confidence intervals can be obtained by applying the confint function
+# to the natural effect model object. The confidence level defaults to 95%, but 
+# can be changed via the level argument. By exponentiating the intervals on the 
+# logit scale, we can obtain the corresponding 95% confidence intervals (based on 
+# the robust standard errors) on the odds ratio scale: If standard errors are 
+# obtained via the bootstrap procedure, bootstrap confidence intervals are returned.
+# The default type is calculated based on a first order normal approximation
+# (type = "norm"), but other types of bootstrap confidence intervals (such as basic bootstrap,
+# bootstrap percentile and bias-corrected and accelerated confidence intervals) can be obtained
+# by setting the type argument to the desired type.
+
+exp(confint(medflex::neEffdecomp(neMod1)))
+```
+
+
+```{r}
+#| label: medflex_cont_exp
+
+set.seed(2014)
+# we can have continuous exposures, where instead of enumerating all
+# exposure levels to construct auxiliary variables x and x∗
+# for each subject, Vansteelandt et al. (2012b) proposed to draw specific quantiles
+# from the conditional density of the exposure given baseline covariates. 
+# By default, these hypothetical exposure levels are drawn from a linear
+# model for the exposure, conditional on a linear combination of all covariates 
+# specified in the working model. 
+# If one wishes to use another model for the exposure, this default model 
+# specification can be overruled by referring to a fitted model object in the xFit
+# argument. Misspecification of this sampling model does not induce bias in the 
+# estimated coefficients and standard errors of the natural effect model
+
+# Both neWeight and neImpute allow to choose the number of draws to sample from this
+# conditional density via the nRep argument (which defaults to 5), simulations 
+# have shown the gain to be ignorable when choosing more than 5 draws 
+
+expData_cont_exp <- medflex::neWeight(negaff ~ att + gender + educ + age,
+                    family = gaussian, 
+                    data = UPBdata, 
+                    nRep = 5)
+
+neMod_cont_exp <- medflex::neModel(UPB ~ att0 + att1 + gender + educ + age,
+                          family = binomial("logit"), 
+                          expData = expData_cont_exp, 
+                          se = "robust")
+summary(neMod_cont_exp)
+
+
+```
+
+For a subject with baseline covariate levels C, the direct and indirect effects of
+one standard deviation increase in anxious attachment level correspond
+to an increase in the odds of displaying unwanted pursuit behaviors by a factor
+$e^{\beta_1} = e^{0.29578} = 1.34$ (34% increase in odds) (NDE) and $e^{\beta_2} = e^{0.18324} = 1.2$ (NIE),
+regardless of the initial level
+
+If the outcome was continuous, it would be interpreted the same as it was in the
+mediation package, only with the caveat that the output medflex gives is conditional
+on baseline covariate levels C. The difference between conditional and marginal
+is negligible if there is no interaction between the variables. medflex handles
+interactions in models TBA.
+
+Usecases for between neWeight and neImpute TBA (does the same thing but different
+approaches; weighted-based approach amounts to fitting a working model for the
+mediator, whereas the imputation-based approach requires fitting a mean model
+for the outcome)
+:::
+
+You can report proportion mediated, but without the confidence intervals and p-value
+(beware, it can be >1 or <0 due to directionality, which does not make sense)
+
+
+
+
+
+## References
+:::{.refs-small-text}
+1) https://doi.org/10.1146/annurev-publhealth-032315-021402 - Mediation Analysis: A Practitioner's Guide
+2) https://library.virginia.edu/data/articles/introduction-to-mediation-analysis - traditional overview of mediation
+3) https://www.sciencedirect.com/science/article/pii/S0013935126009382?via%3Dihub#sec2 - paper uses mediation and IRR to report
+4) https://spout.ussg.indiana.edu/CRAN/web/packages/mediation/vignettes/mediation.pdf
+5) https://cran.r-project.org/web/packages/medflex/vignettes/medflex.pdf
+6) https://stats.stackexchange.com/questions/104692/comprehending-output-from-mediation-analysis-in-r
+7) https://pmc.ncbi.nlm.nih.gov/articles/PMC10615709/ - example where E,M,Y are binary
+8) https://arxiv.org/pdf/1904.08515 - clarifying casual for the researcher
+9)https://pmc.ncbi.nlm.nih.gov/articles/PMC10415648/ - comparison of 2 packages
+:::
