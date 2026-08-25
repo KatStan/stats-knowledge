@@ -18,6 +18,14 @@ have a test that does exactly what you need, but it makes assumptions about
 your data for it to be used that just don't hold in your instance, making it a
 "useless" model.
 
+The main motivation is to not have to go and search through multiple sources for 
+that one piece of information that I know I read a while ago and won't ever find 
+again. That's why this knowledgebase won't be a comprehensive, thorough standalone
+resource for deep learning, but more of an accurate cheatsheet for when and how to use 
+certain statistical approaches, comprised from information others have shared online,
+research and review papers, vignettes and package documentation, as well as my own
+notes and understandings from university. 
+
 ### Let me know of any issues
 
 If you see anything on the website that looks wrong, please tell me, I want the website to be accurate!  
