@@ -9,6 +9,7 @@ scientific questions. Knowing when to pick a test/technique allows for insights
 we all strive for, otherwise you are creating "useless" models. 
 
 My goal is to create a knowledgebase of stats, answering the following:  
+
 -  "What question is this test/technique answering" and   
 -  "Am I allowed to use it for my instance?" 
 
