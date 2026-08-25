@@ -20,7 +20,7 @@ listing:
     fields: 
       - title
 ---
-Make sure to check the About page if this is your first time here!
+Make sure to check the [About page](about.qmd) if this is your first time here!
 
 ## Modelling
 
