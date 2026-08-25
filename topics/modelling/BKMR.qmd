@@ -1,5 +1,5 @@
 ---
-title: "BKMR"
+title: "Bayesian Kernel Machine Regression (BKMR)"
 format: html
 ---
 

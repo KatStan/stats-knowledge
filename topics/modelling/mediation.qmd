@@ -1,5 +1,5 @@
 ---
-title: "mediation"
+title: "Mediation analysis"
 format: html
 ---
 
