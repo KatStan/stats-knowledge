@@ -16,3 +16,12 @@ have a test that does exactly what you need, but it makes assumptions about
 your data for it to be used that just don't hold in your instance, making it a
 "useless" model.
 
+### Let me know of any issues
+
+If you see anything on the website that looks wrong, please tell me, I want the website to be accurate!  
+To make telling me as easy as possible, I have made a set of template issues you can lodge, covering 
+typos and formatting with the [style issue template](https://github.com/KatStan/stats-knowledge/issues/new?template=style-issue-template.md),
+to incorrect or misleading information claimed with [incorrect content tempate](https://github.com/KatStan/stats-knowledge/issues/new?template=incorrect-content-template.md). There is also a [knowledge request tempate](https://github.com/KatStan/stats-knowledge/issues/new?template=knowledge-request-template.md)
+for concepts you feel are missing, given the existing contents of the website.
+Please leave the term in brackets at the beginning of the issue title, it helps for prioritising and organisation! 
+Please check that what you have found is not already in another reported issue. 
