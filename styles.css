@@ -5,6 +5,17 @@ mjx-container[display="true"] {
   max-width: 100%;
 }
 
+/* font size of references */
 .refs-small-text {
   font-size: 50%;
+}
+
+/* math inline ($ only) size */
+.math.inline .MathJax {
+font-size: 90% !important;
+}
+
+/* math display ($$) size */
+.math.display .MathJax {
+    font-size: 90% !important;
 }
