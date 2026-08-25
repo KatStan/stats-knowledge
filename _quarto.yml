@@ -12,6 +12,8 @@ website:
 
 format:
   html:
+    link-external-newwindow: true
+    link-external-icon: true
     include-in-header:
       - file: js/custom/tabset_functions.html
     theme:
