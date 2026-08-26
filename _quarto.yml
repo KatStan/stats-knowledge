@@ -14,6 +14,7 @@ format:
   html:
     link-external-newwindow: true
     link-external-icon: true
+    link-external-filter: '^https:\/\/katstan\.github\.io\/stats-knowledge'
     include-in-header:
       - file: js/custom/tabset_functions.html
     theme:
