@@ -217,8 +217,7 @@ bkmr::ExtractPIPs(fitkm_hier)
 # fix the other exposures is given by q.fixed. 
 # Here we see that for z1 and z2, increasing values of the exposures is associated
 # with increasing values of the outcome Y (for each of the other predictors in Z
-# fixed to their 50th percentile). It also looks like z1 may have a nonlinear 
-# relationship with the outcome
+# fixed to their 50th percentile).
 
 pred.resp.univar.hier <- bkmr::PredictorResponseUnivar(fit = fitkm_hier,
                                                         q.fixed = 0.5)
