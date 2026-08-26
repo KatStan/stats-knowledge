@@ -235,17 +235,18 @@ Commonly used in environmental (chemical) mixture risk evaluation, since more co
 <li>Assumption #1: the relationship between the overall mixture effect (wqs) and outcome is linear</li>
 <li>Assumption #2: there are no interactions between the mixture elements in their effect on the outcome (it’s just additive)</li>
 </ul>
-<p>You check #1 by model diagnostics after fitting (covered in <a href="../../topics/modelling/lin_regression.html">Linear Regression</a>) For #2, a literature approach can be taken, or running GLMs with interaction terms, or even running BKMR TBA for interaction testing</p>
+<p>You check #1 by model diagnostics after fitting (covered in <a href="../../topics/modelling/lin_regression.html">Linear Regression</a>).<br>
+For #2, a literature approach can be taken, or running GLMs with interaction terms, or even running <a href="bkmr.qmd">BKMR</a> for interaction testing</p>
 </section>
 <section id="how-do-i-use-it" class="level2">
 <h2 class="anchored" data-anchor-id="how-do-i-use-it">How do I use it?</h2>
 <ul>
-<li>need to enforce at the beginning that all variables are either all positive or all negative relative to the outcome (e.g.&nbsp;you believe MEP is harmful for cognition, but that the rest of the mixture is protective of cognition, where more “cognition” means better cognition, so you would want to invert(- them) MEP values, since you believe smaller values of MEP are good for cognition i.e in the same direction as “cognition”)</li>
-<li>need to enforce at the beginning if one variable is binary in the mixture, then all of them need to be binary</li>
-<li>in practice, have less than a smaller doubledigit number of mixture elements</li>
-<li>do you have an overall mixture effect? Look at the Beta coeff sample mean and test against =0. Beta can be &lt;0, meaning the effect decreases the outcome<br>
+<li>Need to enforce at the beginning that all variables are either all positive or all negative relative to the outcome (e.g.&nbsp;you believe MEP is harmful for cognition, but that the rest of the mixture is protective of cognition, where more “cognition” means better cognition, so you would want to invert(- them) MEP values, since you believe smaller values of MEP are good for cognition i.e in the same direction as “cognition”)</li>
+<li>Need to enforce at the beginning if one variable is binary in the mixture, then all of them need to be binary</li>
+<li>In practice, have less than a smaller double-digit number of mixture elements</li>
+<li>Do you have an overall mixture effect? Look at the <span class="math inline">\(\beta\)</span> coeff sample mean and test against =0. <span class="math inline">\(\beta\)</span> can be &lt;0, meaning the effect decreases the outcome<br>
 </li>
-<li>the elements whose weights are larger than 1/(#mixture elements) indicate a larger contribution to the outcome than expected by chance</li>
+<li>The elements whose weights are larger than <span class="math inline">\(\frac{1}{#mixture elements}\)</span> indicate a larger contribution to the outcome than expected by chance</li>
 </ul>
 </section>
 <section id="code-usage-examples" class="level2">
@@ -479,7 +480,7 @@ Mean AIC:  905.08 </code></pre>
 <section id="what-is-it" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-it">What is it?</h2>
 <p>An estimate of an overall mixture effect of multiple things.<br>
-Acquiring a weighted index i.e.&nbsp;weighted sum of the components; the weights are determined within the procedure<br>
+Acquiring a weighted index i.e.&nbsp;weighted sum of the components; the weights are determined within the procedure.<br>
 Some things will be weighted higher than others and they are contributing more to the mixture effect than others with low weights.</p>
 <section id="wqsr-overview" class="level4">
 <h4 class="anchored" data-anchor-id="wqsr-overview">WQSR overview</h4>
@@ -494,9 +495,10 @@ Some things will be weighted higher than others and they are contributing more t
 </li>
 <li>test association (acquire a beta coeff) between wqs variable and outcome variable in holdout (because you don’t want to use the same data for testing this association as the data you used to get the weights for wqs in the first place, because then you are overfitting)</li>
 </ul></li>
-<li><p>You have done this 100 times, now you end up with a distribution of Beta coeff that represent the relationship between the mixture variable and the outcome in the test sets, then you take the mean of all those betas and that is the estimate of the association</p></li>
-<li><p>You also have made the weights for each variable 100x, so you have a distribution of those, and you also take the mean for each weight -&gt; that mean is compared to tau tau is 1/number of elements in mixture so basically represents the expected weight if every element contributed equally to the mixture variables that are important are the ones whose mean weight are above the tau threshold -&gt; not a significance test!</p></li>
-<li><p>Do you have an overall mixture effect? Look at the Beta coeff distribution, acquire the sample mean (the one you would report, mentioned above), this has a normal distribution based on the central limit theorem (n=100&gt;=30), test whether the normal distributions mean parameter (aka the sample mean value) is different from 0 by conducting a t-test (because you don’t know the distribution sd, but will use the standard error) Beta can be &lt;0, meaning the effect decreases the outcome</p></li>
+<li><p>You have done this 100 times, now you end up with a distribution of <span class="math inline">\(\beta\)</span> coeff that represent the relationship between the mixture variable and the outcome in the test sets, then you take the mean of all those <span class="math inline">\(\beta\)</span> coefs and that is the estimate of the association</p></li>
+<li><p>You also have made the weights for each variable 100x, so you have a distribution of those, and you also take the mean for each weight <span class="math inline">\(\rightarrow\)</span> that mean is compared to <span class="math inline">\(\tau\)</span>.<br>
+<span class="math inline">\(\tau\)</span> is 1/number of elements in mixture, so basically represents the expected weight if every element contributed equally to the mixture variables that are important are the ones whose mean weight are above the tau threshold <span class="math inline">\(\rightarrow\)</span> not a significance test!</p></li>
+<li><p>Do you have an overall mixture effect? Look at the <span class="math inline">\(\beta\)</span> coeff distribution, acquire the sample mean (the one you would report, mentioned above), this has a normal distribution based on the central limit theorem (n=100&gt;=30), test whether the normal distributions mean parameter (a.k.a. the sample mean value) is different from 0 by conducting a t-test (because you don’t know the distribution sd, but will use the standard error) <span class="math inline">\(\beta\)</span> can be &lt;0, meaning the mixture effect decreases the outcome</p></li>
 <li><p>Characteristics of weights:</p>
 <ul>
 <li>The sum of all component weights <span class="math inline">\(w_{j}\)</span> should equal 1 <span class="math inline">\((\sum w_j = 1)\)</span> within each train dataset. However, the final weights we have are estimates of a distribution, so it will be close to one, if not exact<br>
