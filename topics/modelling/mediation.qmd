@@ -27,8 +27,6 @@ doesn't return significance, if there is a good theoretical reasoning, that's
 enough). Without a relationship, there is nothing to mediate  
 - There is a relationship between exposure and mediator, as is the idea that the
 exposure affects the mediator that affects the outcome
-- The outcome is binary -> **not a requirement**, just a package(s) and result 
-interpretation convenience  
 - Assumptions:  
   1) Must control for exposure-outcome confounding (i.e. include all covariates)  
   2) Must control for mediator-outcome confounding   
@@ -65,7 +63,7 @@ Y, i.e. whether M affects Y, but X no longer affects Y as much, now that M is th
 
 Since the sequential ignorability assumption is untestable, we recommend that 
 the researchers conduct a sensitivity analysis via the `medsens` function, 
-which can be applied to certain statistical models - **TBA**
+which can be applied to certain statistical models - **TBA**  
 In practice, you won't be 100% sure of whether you have included all confounders,
 so sensitivity analyses to test for robustness of the in/direct estimates are necessary
 
